@@ -3,11 +3,17 @@ import { useIntl } from "react-intl";
 
 import { Button } from "./components/ui/button";
 
+type Idk = {
+  id: number;
+  top: number;
+  left: number;
+};
+
 function App() {
   const intl = useIntl();
 
   const [count, setCount] = useState(0);
-  const [idk, setIdk] = useState<any[]>([]);
+  const [idk, setIdk] = useState<Idk[]>([]);
 
   const handleClick = () => {
     setCount((prev) => prev + 1);
