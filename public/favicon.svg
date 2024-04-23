@@ -1,0 +1,55 @@
+<svg width="88px" height="88px" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="SvgjsG1877" featurekey="G09qjj-0"
+    transform="matrix(2.377717391304348,0,0,2.377717391304348,0,-0.026154129401497223)"
+    fill="#41f367" stroke="#000000">
+    <g xmlns="http://www.w3.org/2000/svg" display="none">
+      <rect x="-26.591" y="-65.699" display="inline" fill="#41f367" width="240.181" height="241.399"></rect>
+    </g>
+    <g xmlns="http://www.w3.org/2000/svg" display="none">
+      <path display="inline"
+        d="M16,1.425l14.586,14.586L16,30.596L1.414,16.011L16,1.425 M16,0.011l-16,16l16,16l16-16L16,0.011   L16,0.011z"></path>
+      <path display="inline"
+        d="M16,9.901l6.11,6.11L16,22.121l-6.11-6.11L16,9.901 M16,8.486l-7.524,7.524L16,23.535l7.524-7.524   L16,8.486L16,8.486z"></path>
+    </g>
+    <g xmlns="http://www.w3.org/2000/svg" display="none">
+      <g display="inline">
+        <g>
+          <rect x="5.186" y="5.197" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.635 16.0031)"
+            fill="#41f367" width="21.628" height="21.628"></rect>
+        </g>
+        <g>
+          <path
+            d="M16,1.425l14.586,14.586L16,30.596L1.414,16.011L16,1.425 M16,0.011l-16,16l16,16l16-16L16,0.011L16,0.011z"></path>
+        </g>
+      </g>
+      <g display="inline">
+        <g>
+          <rect x="11.179" y="11.19" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.635 16.0031)"
+            fill="#41f367" width="9.641" height="9.641"></rect>
+        </g>
+        <g>
+          <g>
+            <path
+              d="M16,9.901l6.11,6.11L16,22.121l-6.11-6.11L16,9.901 M16,8.486l-7.524,7.524L16,23.535l7.524-7.524L16,8.486L16,8.486z"></path>
+          </g>
+        </g>
+      </g>
+    </g>
+    <g xmlns="http://www.w3.org/2000/svg" display="none">
+      <g display="inline">
+        <rect x="4.686" y="4.697" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.6349 16.0031)"
+          fill="#41f367" width="22.627" height="22.627"></rect>
+      </g>
+      <g display="inline">
+        <rect x="10.68" y="10.69" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -6.6349 16.0031)"
+          fill="#41f367" width="10.641" height="10.641"></rect>
+      </g>
+    </g>
+    <g xmlns="http://www.w3.org/2000/svg">
+      <g>
+        <path
+          d="M32,16.011l-16-16l-16,16l16,16L32,16.011z M16,10.709l5.302,5.302L16,21.312l-5.302-5.302L16,10.709z"></path>
+      </g>
+    </g>
+  </g>
+</svg>
