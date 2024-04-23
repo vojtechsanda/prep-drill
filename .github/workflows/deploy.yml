@@ -44,8 +44,8 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -56,13 +56,13 @@ jobs:
         run: pnpm install
 
       - name: Check prettier
-        run: npx prettier --check .
+        run: pnpm dlx prettier --check .
 
       - name: Check ESLint
-        run: npm run lint
+        run: pnpm lint
 
       - name: Build
-        run: npm run build
+        run: pnpm build
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
