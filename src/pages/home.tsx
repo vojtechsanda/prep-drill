@@ -1,10 +1,8 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Banana, Bird } from "lucide-react";
 import { useState } from "react";
 import { useIntl } from "react-intl";
 
 import { Button } from "@/components/ui/button";
-
-const queryClient = new QueryClient();
 
 type HelloHeadingInfo = {
   id: number;
@@ -34,19 +32,16 @@ export function Home() {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
         {floatingHelloes.map((item) => (
-          <h1
-            className="absolute text-4xl whitespace-nowrap"
+          <div
             key={item.id}
-            style={{ top: `${item.top}%`, left: `${item.left}%` }}
+            className="absolute"
+            style={{ top: `${item.top}vh`, left: `${item.left}vw` }}
           >
-            {intl.formatMessage({
-              id: "hello-world.title",
-              defaultMessage: "Hello, world!",
-            })}
-          </h1>
+            {intl.locale === "en" ? <Banana /> : <Bird />}
+          </div>
         ))}
       </div>
 
@@ -72,6 +67,6 @@ export function Home() {
           </Button>
         </div>
       </div>
-    </QueryClientProvider>
+    </>
   );
 }
