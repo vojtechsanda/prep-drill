@@ -78,5 +78,5 @@
 html,
 body,
 #root {
-  @apply min-h-[100vh] h-full;
+  @apply h-full;
 }
