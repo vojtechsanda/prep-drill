@@ -1,8 +1,10 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { useIntl } from "react-intl";
-import { Link } from "react-router-dom";
 
 import { Button } from "./components/ui/button";
+
+const queryClient = new QueryClient();
 
 type Idk = {
   id: number;
@@ -30,7 +32,7 @@ function App() {
   };
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
         {idk.map((item) => (
           <h1
@@ -68,7 +70,7 @@ function App() {
           </Button>
         </div>
       </div>
-    </>
+    </QueryClientProvider>
   );
 }
 
