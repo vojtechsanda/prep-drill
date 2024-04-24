@@ -3,13 +3,10 @@ import "./globals.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { LanguageProvider } from "./lang/language-provider";
-import { RouterProvider } from "./routes/router-provider";
+import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <LanguageProvider>
-      <RouterProvider />
-    </LanguageProvider>
+    <App />
   </React.StrictMode>,
 );
