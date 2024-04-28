@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input, InputProps } from "@/components/ui/input";
 
-type FormFieldInput<T extends FieldValues> = Omit<
+type FileFormField<T extends FieldValues> = Omit<
   InputProps,
   "name" | "form" | "label"
 > & {
@@ -18,22 +18,24 @@ type FormFieldInput<T extends FieldValues> = Omit<
   label?: string;
 };
 
-export function FormFieldInput<T extends FieldValues>({
+export function FileFormField<T extends FieldValues>({
   form,
   name,
   label,
   className,
   ...props
-}: FormFieldInput<T>) {
+}: FileFormField<T>) {
+  const fileRef = form.register(name, { required: true });
+
   return (
     <FormField
       control={form.control}
       name={name}
-      render={({ field }) => (
+      render={() => (
         <FormItem className={className}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input {...props} {...field} />
+            <Input type="file" {...props} {...fileRef} />
           </FormControl>
           <FormMessage />
         </FormItem>
