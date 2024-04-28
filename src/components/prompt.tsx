@@ -22,7 +22,7 @@ type PromptProps<T extends FieldValues> = PropsWithChildren<{
   title: ReactNode;
   description?: ReactNode;
   actions?: ReactNode;
-  defaultValues: DefaultValues<T>;
+  defaultValues?: DefaultValues<T>;
   schema: z.ZodSchema<T>;
   content: (form: ReturnType<typeof useForm<T>>) => ReactNode;
   submitButtonContent?: ReactNode;

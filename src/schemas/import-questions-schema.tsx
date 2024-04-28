@@ -24,4 +24,6 @@ export function useImportQuestionsSchema() {
   });
 }
 
-export type ImportQuestionsSchema = ReturnType<typeof useImportQuestionsSchema>;
+export type ImportQuestionsSchema = z.infer<
+  ReturnType<typeof useImportQuestionsSchema>
+>;
