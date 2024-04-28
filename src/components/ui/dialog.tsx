@@ -57,12 +57,12 @@ const DialogContent = forwardRef<
 ));
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-type DialogContentPromptProps<T extends FieldValues> = Omit<
+export type DialogContentPromptProps<T extends FieldValues> = Omit<
   DialogContentProps,
   "form" | "onSubmit"
 > & {
   form: ReturnType<typeof useForm<T>>;
-  onSubmit: (values: T) => void;
+  onSubmit: (values: T) => Promise<void> | void;
 };
 
 const DialogContentPromptRefForwardable = <T extends FieldValues>(
