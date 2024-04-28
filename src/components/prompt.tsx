@@ -70,7 +70,7 @@ export function Prompt<T extends FieldValues>({
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContentPrompt
-        className={cn("sm:max-w-md", className)}
+        className={cn("sm:max-w-md max-w-xs", className)}
         form={form}
         onSubmit={handleSubmit}
         {...props}

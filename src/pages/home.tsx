@@ -9,7 +9,7 @@ export function Home() {
     <>
       <div className="grid items-center h-full justify-items-center">
         <div className="flex flex-col items-center gap-6">
-          <h1 className="text-4xl">
+          <h1 className="text-4xl text-center">
             {intl.formatMessage({
               id: "homepage.title.welcome-to",
               defaultMessage: "Welcome to",
@@ -17,7 +17,7 @@ export function Home() {
             <span className="font-bold">PrepDrill</span>
           </h1>
 
-          <h2 className="text-2xl">
+          <h2 className="text-2xl text-center">
             {intl.formatMessage({
               id: "homepage.subtitle",
               defaultMessage:
