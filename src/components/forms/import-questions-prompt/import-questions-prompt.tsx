@@ -1,11 +1,10 @@
 import { FileUp } from "lucide-react";
 import { useIntl } from "react-intl";
 
+import { Prompt } from "@/components";
+import { FileFormField } from "@/components/forms/form-parts";
+import { Button } from "@/components/ui/button";
 import { useImportQuestionsSchema } from "@/schemas/import-questions-schema";
-
-import { Prompt } from "../prompt";
-import { Button } from "../ui/button";
-import { FileFormField } from "./form-parts";
 
 export function ImportQuestionsPrompt() {
   const intl = useIntl();
