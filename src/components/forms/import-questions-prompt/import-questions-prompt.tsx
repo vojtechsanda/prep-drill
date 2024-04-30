@@ -4,20 +4,17 @@ import { useIntl } from "react-intl";
 import { Prompt } from "@/components";
 import { FileFormField } from "@/components/forms/form-parts";
 import { Button } from "@/components/ui/button";
-import { useImportQuestionsSchema } from "@/schemas/import-questions-schema";
+import { useImportQuestionsSchema } from "@/schemas";
+
+import { useHandleSubmit } from "./hooks";
 
 export function ImportQuestionsPrompt() {
   const intl = useIntl();
-
   const importQuestionsSchema = useImportQuestionsSchema();
-
-  const defaultValues = {
-    questions: undefined,
-  };
+  const handleSubmit = useHandleSubmit();
 
   return (
     <Prompt
-      defaultValues={defaultValues}
       schema={importQuestionsSchema}
       title={intl.formatMessage({
         id: "import-questions.title",
@@ -28,7 +25,7 @@ export function ImportQuestionsPrompt() {
         defaultMessage:
           "When you import new questions, the existing ones will be replaced with the new ones.",
       })}
-      onSubmit={console.log}
+      onSubmit={handleSubmit}
       content={(form) => (
         <div className="flex items-center w-full space-x-2">
           <FileFormField
