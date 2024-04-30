@@ -1,0 +1,149 @@
+1. What is the capital of France?
+>>>1) Paris
+2) London
+3) Rome
+4) Berlin
+
+2. Who wrote "To Kill a Mockingbird"?
+>>>1) Harper Lee
+2) J.K. Rowling
+3) Stephen King
+4) Ernest Hemingway
+
+3. Which planet is known as the Red Planet?
+>>>1) Mars
+2) Venus
+3) Jupiter
+4) Saturn
+
+4. What is the chemical symbol for water?
+>>>1) H2O
+2) CO2
+3) NaCl
+4) O2
+
+5. What is the tallest mammal?
+>>>1) Giraffe
+2) Elephant
+3) Hippopotamus
+4) Rhinoceros
+
+6. Who painted the Mona Lisa?
+>>>1) Leonardo da Vinci
+2) Vincent van Gogh
+3) Pablo Picasso
+4) Claude Monet
+
+7. What is the capital of Japan?
+>>>1) Tokyo
+2) Beijing
+3) Seoul
+4) Bangkok
+
+8. What is the powerhouse of the cell?
+>>>1) Mitochondria
+2) Nucleus
+3) Ribosome
+4) Golgi apparatus
+
+9. Who is the author of "1984"?
+>>>1) George Orwell
+2) Aldous Huxley
+3) J.R.R. Tolkien
+4) F. Scott Fitzgerald
+
+10. What is the chemical symbol for gold?
+>>>1) Au
+2) Ag
+3) Fe
+4) Cu
+
+11. What is the largest ocean on Earth?
+>>>1) Pacific Ocean
+2) Atlantic Ocean
+3) Indian Ocean
+4) Arctic Ocean
+
+12. Who invented the telephone?
+>>>1) Alexander Graham Bell
+2) Thomas Edison
+3) Nikola Tesla
+4) Albert Einstein
+
+13. What is the capital of Australia?
+>>>1) Canberra
+2) Sydney
+3) Melbourne
+4) Perth
+
+14. Who wrote "The Great Gatsby"?
+>>>1) F. Scott Fitzgerald
+2) Ernest Hemingway
+3) Mark Twain
+4) Charles Dickens
+
+15. What is the chemical symbol for carbon?
+>>>1) C
+2) Co
+3) Ca
+4) Cr
+
+16. What is the largest organ in the human body?
+>>>1) Skin
+2) Liver
+3) Heart
+4) Brain
+
+17. What is the main ingredient in guacamole?
+>>>1) Avocado
+2) Tomato
+3) Onion
+4) Garlic
+
+18. Who painted The Starry Night?
+>>>1) Vincent van Gogh
+2) Leonardo da Vinci
+3) Pablo Picasso
+4) Claude Monet
+
+19. What is the chemical symbol for iron?
+>>>1) Fe
+2) Ir
+3) In
+4) Au
+
+20. What is the largest desert in the world?
+>>>1) Sahara Desert
+2) Gobi Desert
+3) Arabian Desert
+4) Kalahari Desert
+
+21. Which of the following are primary colors?
+>>>1) Red
+>>>2) Blue
+3) Green
+>>>4) Yellow
+
+22. Which of the following are programming languages?
+>>>1) Python
+>>>2) Java
+3) Photoshop
+>>>4) JavaScript
+
+23. Which of the following are continents?
+>>>1) Africa
+>>>2) Europe
+>>>3) Asia
+4) Amazon
+
+24. Which of the following are mammals?
+>>>1) Dog
+>>>2) Cat
+3) Crocodile
+>>>4) Elephant
+
+25. Which of the following are fruits?
+>>>1) Apple
+>>>2) Banana
+3) Carrot
+>>>4) Orange
