@@ -15,31 +15,29 @@ export function useSavedQuestionsQuery() {
   return useQuery({
     queryKey: allQuestionsQueryKey,
     queryFn: () => {
-      const valueFromStorage =
-        localStorage.getItem(`${STORAGE_PREFIX}/questions`) ?? "[]";
+      try {
+        const valueFromStorage =
+          localStorage.getItem(`${STORAGE_PREFIX}/questions`) ?? "[]";
 
-      const questionsUnsafe = JSON.parse(valueFromStorage);
-      const result = questionsSchema.safeParse(questionsUnsafe);
+        const questionsRaw = JSON.parse(valueFromStorage);
+        return questionsSchema.parse(questionsRaw);
+      } catch (error) {
+        console.log(error);
 
-      if (result.success) {
-        return result.data;
+        toast({
+          title: intl.formatMessage({
+            id: "questions-query.error.title",
+            defaultMessage: "Error loading questions",
+          }),
+          description: intl.formatMessage({
+            id: "questions-query.error.description",
+            defaultMessage: "Failed to load saved questions",
+          }),
+          variant: "destructive",
+        });
+
+        return [];
       }
-
-      console.log(result.error);
-
-      toast({
-        title: intl.formatMessage({
-          id: "questions-query.error.title",
-          defaultMessage: "Error loading questions",
-        }),
-        description: intl.formatMessage({
-          id: "questions-query.error.description",
-          defaultMessage: "Failed to load saved questions",
-        }),
-        variant: "destructive",
-      });
-
-      return [];
     },
   });
 }
