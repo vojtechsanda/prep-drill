@@ -1,6 +1,6 @@
 import { useSavedSessionQuery } from "@/hooks/storage/session";
 
-import { NoSession, QuestionCard } from "./_components";
+import { FinishedSession, NoSession, QuestionCard } from "./_components";
 import { useGetSessionInfo } from "./hooks";
 
 export function Session() {
@@ -12,6 +12,10 @@ export function Session() {
   if (sessionQuery.data === null) return <NoSession />;
 
   const sessionInfo = getSessionInfo(sessionQuery.data);
+
+  if (sessionInfo.isFinished) {
+    return <FinishedSession sessionInfo={sessionInfo} />;
+  }
 
   return (
     sessionInfo.currentQuestion && (

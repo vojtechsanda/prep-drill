@@ -68,6 +68,7 @@ export function useHandleSubmit() {
       (val) => val === true,
     );
 
+    // Update stats
     const updatedSession = { ...sessionInfo.session };
     if (someIncorrect || (someNotChecked && !someCorrect)) {
       updatedSession.incorrectQuestionsIds.push(question.id);
@@ -77,15 +78,18 @@ export function useHandleSubmit() {
       updatedSession.correctQuestionsIds.push(question.id);
     }
 
-    // Update stats
     await saveSession(updatedSession);
 
-    // Update current question, but invalidate it later (refresh, clicking next question button)
+    // Update current question, it will be invalidated later (refresh, clicking the next question button)
     const currentQuestionIndex = updatedSession.questionsIds.indexOf(
       question.id,
     );
     updatedSession.currentQuestionId =
       updatedSession.questionsIds[currentQuestionIndex + 1];
+
+    if (updatedSession.currentQuestionId === undefined) {
+      updatedSession.status = "FINISHED";
+    }
 
     await saveSession({ session: updatedSession, invalidate: false });
   };
