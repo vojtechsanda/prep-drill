@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
@@ -84,6 +84,10 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
     defaultValues,
     resolver: zodResolver(questionCardAnswersSchema),
   });
+
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
   const sessionInfo = useSessionInfo();
   if (!sessionInfo) return null;

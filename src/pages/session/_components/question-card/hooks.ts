@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useSessionInfo } from "@/hooks/session";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { Answer, Question } from "@/schemas";
@@ -5,12 +7,14 @@ import { Answer, Question } from "@/schemas";
 import { QuestionCardAnswers } from "./schema";
 
 export function useDefaultValues(answers: Answer[]): QuestionCardAnswers {
-  return {
-    answers: answers.map((answer) => ({
-      id: answer.id,
-      checked: false,
-    })),
-  };
+  return useMemo(() => {
+    return {
+      answers: answers.map((answer) => ({
+        id: answer.id,
+        checked: false,
+      })),
+    };
+  }, [answers]);
 }
 
 /**
@@ -82,6 +86,8 @@ export function useSaveAnswers() {
 
     await saveSession(updatedSession);
 
+    // TODO: Remove this workaround (next question should be updated after clicking next question button)
+    // TODO: This workaround is needed right now, because when user refreshes before clicking next, the current question is not updated - this could be fixed by saving all responses and loading it back on refresh -> showing user readonly results
     // Update current question, it will be invalidated later (refresh, clicking the next question button)
     const currentQuestionIndex = updatedSession.questionsIds.indexOf(
       question.id,
