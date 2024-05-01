@@ -1,3 +1,3 @@
 # PrepDrill
 
-Simple client-side application for drilling questions
+Simple client-side application for drilling questions for exams

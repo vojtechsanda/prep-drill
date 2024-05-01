@@ -31,7 +31,7 @@ export function Home() {
             {intl.formatMessage({
               id: "homepage.subtitle",
               defaultMessage:
-                "Simple application for drilling the questions for exams",
+                "Simple application for drilling questions for exams",
             })}
           </h2>
 
