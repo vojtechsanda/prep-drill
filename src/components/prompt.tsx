@@ -56,8 +56,16 @@ export function Prompt<T extends FieldValues>({
 
   const handleSubmit = async (data: T) => {
     setState((prev) => ({ ...prev, loading: true }));
-    await onSubmit(data);
-    setState((prev) => ({ ...prev, open: false, loading: false }));
+
+    let error = false;
+    try {
+      await onSubmit(data);
+    } catch (e) {
+      console.error(e);
+      error = true;
+    }
+
+    setState((prev) => ({ ...prev, open: error, loading: false }));
   };
 
   return (
