@@ -10,7 +10,7 @@ import {
 import { Switch, SwitchProps } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
-type FormFieldInput<T extends FieldValues> = Omit<
+type SwitchFormField<T extends FieldValues> = Omit<
   SwitchProps,
   "name" | "form" | "label"
 > & {
@@ -25,14 +25,14 @@ export function SwitchFormField<T extends FieldValues>({
   label,
   className,
   ...props
-}: FormFieldInput<T>) {
+}: SwitchFormField<T>) {
   return (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
         <FormItem className="flex flex-col gap-0">
-          <div className={cn("flex items-center gap-2", className)}>
+          <div className={cn("flex gap-2", className)}>
             <FormControl>
               <Switch
                 checked={field.value}
