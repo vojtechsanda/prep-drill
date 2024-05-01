@@ -41,9 +41,9 @@ export function useQuestionsFileProcessing() {
       if (nextLineIsTitle) {
         nextLineIsTitle = false;
 
-        const [id, question] = line.split(". ");
+        const [id, ...question] = line.split(". ");
         currentQuestion.id = id;
-        currentQuestion.title = question;
+        currentQuestion.title = question.join(". ");
         return;
       }
 
@@ -57,13 +57,13 @@ export function useQuestionsFileProcessing() {
       }
 
       // Answer processing
-      const [prefix, answerText] = line.split(") ");
+      const [prefix, ...answerText] = line.split(") ");
       const [id, idIfCorrect] = prefix.split(">>>");
       const isCorrect = !!idIfCorrect;
 
       const answer: Answer = {
         id: idIfCorrect || id,
-        text: answerText,
+        text: answerText.join(") "),
         isCorrect: isCorrect || undefined,
       };
 
