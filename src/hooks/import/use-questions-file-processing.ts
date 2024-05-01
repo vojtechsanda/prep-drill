@@ -1,6 +1,6 @@
 import { Answer, Question, Questions, useQuestionsSchema } from "@/schemas";
 
-import { useFileLoading } from "./useFileLoading";
+import { useFileLoading } from "./use-file-loading";
 
 /**
  * Expected format for questions in file is as follows (each question must have a trailing newline):

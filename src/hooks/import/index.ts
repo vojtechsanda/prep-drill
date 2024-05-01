@@ -1,2 +1,2 @@
-export { useQuestionsFileProcessing } from "./useQuestionsFileProcessing";
-export { useFileLoading } from "./useFileLoading";
+export { useQuestionsFileProcessing } from "./use-questions-file-processing";
+export { useFileLoading } from "./use-file-loading";

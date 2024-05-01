@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { STORAGE_PREFIX } from "@/env";
 import { Questions } from "@/schemas";
 
-import { allQuestionsQueryKey } from "./useSavedQuestionsQuery";
+import { allQuestionsQueryKey } from "./use-saved-questions-query";
 
 export function useSaveQuestionsMutation() {
   const intl = useIntl();
