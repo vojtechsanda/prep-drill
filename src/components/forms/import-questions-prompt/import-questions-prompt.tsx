@@ -1,4 +1,5 @@
 import { FileUp } from "lucide-react";
+import { PropsWithChildren } from "react";
 import { useIntl } from "react-intl";
 
 import { Prompt } from "@/components";
@@ -8,7 +9,9 @@ import { useImportQuestionsSchema } from "@/schemas";
 
 import { useHandleSubmit } from "./hooks";
 
-export function ImportQuestionsPrompt() {
+export function ImportQuestionsPrompt({
+  children,
+}: PropsWithChildren<unknown>) {
   const intl = useIntl();
   const importQuestionsSchema = useImportQuestionsSchema();
   const handleSubmit = useHandleSubmit();
@@ -50,13 +53,15 @@ export function ImportQuestionsPrompt() {
         </>
       }
     >
-      <Button>
-        <FileUp />
-        {intl.formatMessage({
-          id: "import-questions.trigger",
-          defaultMessage: "Import questions",
-        })}
-      </Button>
+      {children ?? (
+        <Button>
+          <FileUp />
+          {intl.formatMessage({
+            id: "import-questions.trigger",
+            defaultMessage: "Import questions",
+          })}
+        </Button>
+      )}
     </Prompt>
   );
 }

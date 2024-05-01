@@ -1,9 +1,14 @@
+import { GraduationCap } from "lucide-react";
 import { useIntl } from "react-intl";
 
 import { ImportQuestionsPrompt } from "@/components/forms";
+import { Button } from "@/components/ui/button";
+import { useSavedQuestionsQuery } from "@/hooks/storage";
 
 export function Home() {
   const intl = useIntl();
+
+  const questions = useSavedQuestionsQuery();
 
   return (
     <>
@@ -25,7 +30,27 @@ export function Home() {
             })}
           </h2>
 
-          <ImportQuestionsPrompt />
+          {!!questions.length && (
+            <div className="flex items-center gap-4">
+              <Button>
+                <GraduationCap />
+                {intl.formatMessage({
+                  id: "homepage.buttons.start-drilling",
+                  defaultMessage: "Start drilling",
+                })}
+              </Button>
+            </div>
+          )}
+          <ImportQuestionsPrompt>
+            {questions.length ? (
+              <Button variant="link">
+                {intl.formatMessage({
+                  id: "homepage.import.import-new-questions",
+                  defaultMessage: "Import new questions",
+                })}
+              </Button>
+            ) : null}
+          </ImportQuestionsPrompt>
         </div>
       </div>
     </>

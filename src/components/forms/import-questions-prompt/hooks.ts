@@ -2,12 +2,15 @@ import { useIntl } from "react-intl";
 
 import { useToast } from "@/components/ui/use-toast";
 import { useQuestionsFileProcessing } from "@/hooks/import";
+import { useSaveQuestionsMutation } from "@/hooks/storage";
 import { ImportQuestionsSchema } from "@/schemas";
 
 export const useHandleSubmit = () => {
   const intl = useIntl();
   const { toast } = useToast();
   const processQuestionsFile = useQuestionsFileProcessing();
+
+  const { mutateAsync: saveQuestions } = useSaveQuestionsMutation();
 
   return async (data: ImportQuestionsSchema) => {
     try {
@@ -30,7 +33,7 @@ export const useHandleSubmit = () => {
         variant: "success",
       });
 
-      console.log(questions);
+      await saveQuestions(questions);
     } catch (e) {
       toast({
         title: intl.formatMessage({
