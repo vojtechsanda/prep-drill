@@ -13,3 +13,9 @@ export {
   sessionConfigSchema,
   type SessionConfigSchema,
 } from "./session-config-schema";
+export {
+  sessionStatusSchema,
+  type SessionStatus,
+  sessionSchema,
+  type Session,
+} from "./session-schema";
