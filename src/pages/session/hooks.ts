@@ -1,15 +1,17 @@
 import { useToast } from "@/components/ui/use-toast";
+import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import { Session } from "@/schemas";
 
 export const useGetSessionInfo = () => {
   const onQuestionSubmit = useQuestionSubmit();
   const onNextQuestion = useNextQuestion();
+  const questionsQuery = useSavedQuestionsQuery();
 
   return (session: Session) => ({
     session,
     isFinished: session.status === "FINISHED",
-    currentQuestion: session.questionsIds.find(
-      (id) => id === session.currentQuestionId,
+    currentQuestion: questionsQuery.data?.find(
+      (question) => question.id === session.currentQuestionId,
     ),
     stats: {
       total: session.questionsIds.length,
