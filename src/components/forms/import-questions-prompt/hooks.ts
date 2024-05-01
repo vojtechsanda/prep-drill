@@ -46,7 +46,8 @@ export const useHandleSubmit = () => {
         }),
         variant: "destructive",
       });
-      console.error(e);
+
+      throw e;
     }
   };
 };
