@@ -9,3 +9,7 @@ export {
   useImportQuestionsSchema,
   type ImportQuestionsSchema,
 } from "./import-questions-schema";
+export {
+  sessionConfigSchema,
+  type SessionConfigSchema,
+} from "./session-config-schema";

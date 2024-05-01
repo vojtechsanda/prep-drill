@@ -1,7 +1,7 @@
-import { GraduationCap } from "lucide-react";
 import { useIntl } from "react-intl";
 
 import { ImportQuestionsPrompt } from "@/components/forms";
+import { SetupSessionPrompt } from "@/components/forms/setup-session-prompt";
 import { Button } from "@/components/ui/button";
 import { useSavedQuestionsQuery } from "@/hooks/storage";
 
@@ -38,13 +38,7 @@ export function Home() {
           <div className="flex flex-col items-center gap-2">
             {!!questions.length && (
               <div className="flex items-center gap-4">
-                <Button>
-                  <GraduationCap />
-                  {intl.formatMessage({
-                    id: "homepage.buttons.start-drilling",
-                    defaultMessage: "Start drilling",
-                  })}
-                </Button>
+                <SetupSessionPrompt />
               </div>
             )}
             <ImportQuestionsPrompt>
