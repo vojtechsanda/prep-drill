@@ -14,9 +14,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { SessionInfo, useSessionInfo } from "@/hooks/session";
+import { useSessionInfo } from "@/hooks/session";
 import { cn, shuffle } from "@/lib/utils";
-import { Question } from "@/schemas";
+import { Question, SessionConfigSchema } from "@/schemas";
 
 import { FooterButtons } from "./footer-buttons";
 import { useDefaultValues, useProcessAnswers, useSaveAnswers } from "./hooks";
@@ -24,7 +24,7 @@ import { QuestionCardAnswers, questionCardAnswersSchema } from "./schema";
 
 type _QuestionCardProps = {
   question: Question;
-  sessionInfo: SessionInfo;
+  sessionConfig: SessionConfigSchema;
 };
 
 export function QuestionCard() {
@@ -35,21 +35,21 @@ export function QuestionCard() {
   return (
     <_QuestionCard
       question={sessionInfo.currentQuestion}
-      sessionInfo={sessionInfo}
+      sessionConfig={sessionInfo.session.config}
     />
   );
 }
 
-function _QuestionCard({ question, sessionInfo }: _QuestionCardProps) {
+function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
   const intl = useIntl();
   const { toast } = useToast();
 
   const shuffledAnswers = useMemo(
     () =>
-      sessionInfo.session.config.shuffleAnswers
+      sessionConfig.shuffleAnswers
         ? shuffle(question.answers)
         : question.answers,
-    [question.answers, sessionInfo.session.config.shuffleAnswers],
+    [question.answers, sessionConfig.shuffleAnswers],
   );
 
   const defaultValues = useDefaultValues(shuffledAnswers);
@@ -84,6 +84,9 @@ function _QuestionCard({ question, sessionInfo }: _QuestionCardProps) {
     defaultValues,
     resolver: zodResolver(questionCardAnswersSchema),
   });
+
+  const sessionInfo = useSessionInfo();
+  if (!sessionInfo) return null;
 
   return (
     <Form onSubmit={onSubmit} form={form} className="w-full max-w-2xl">

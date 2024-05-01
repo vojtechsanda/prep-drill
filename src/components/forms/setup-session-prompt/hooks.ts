@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
+import { useSessionInfo } from "@/hooks/session";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { shuffle } from "@/lib/utils";
@@ -9,8 +10,14 @@ export const useHandleSubmit = () => {
   const navigate = useNavigate();
 
   const questionsQuery = useSavedQuestionsQuery();
-  // TODO: Add questionsWithMistakesQuery
-  const questionsWithMistakesQuery = useSavedQuestionsQuery();
+
+  const sessionInfo = useSessionInfo();
+  const mistakesIds =
+    sessionInfo?.session.questionsIds.filter(
+      (id) =>
+        sessionInfo.session.incorrectQuestionsIds.includes(id) ||
+        sessionInfo.session.partiallyCorrectQuestionsIds.includes(id),
+    ) ?? [];
 
   const { mutateAsync: saveSession } = useSaveSessionMutation();
 
@@ -24,19 +31,19 @@ export const useHandleSubmit = () => {
       incorrectQuestionsIds: [],
     };
 
-    const questions = config.practiceOnlyMistakes
-      ? questionsWithMistakesQuery.data
-      : questionsQuery.data;
+    const questionsIds = config.practiceOnlyMistakes
+      ? mistakesIds
+      : questionsQuery.data?.map((question) => question.id) ?? [];
 
-    if (!questions?.length) {
+    if (!questionsIds?.length) {
       throw new Error("No questions found");
     }
 
-    const shuffledQuestions = config.shuffleQuestions
-      ? shuffle(questions)
-      : questions;
+    const shuffledQuestionsIds = config.shuffleQuestions
+      ? shuffle(questionsIds)
+      : questionsIds;
 
-    session.questionsIds = shuffledQuestions.map((question) => question.id);
+    session.questionsIds = shuffledQuestionsIds;
     session.currentQuestionId = session.questionsIds[0];
 
     const parsedSession = await sessionSchema.parseAsync(session);

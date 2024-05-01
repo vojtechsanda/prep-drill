@@ -26,7 +26,7 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
       defaultValues={{
         shuffleQuestions: true,
         shuffleAnswers: true,
-        repeatIncorrectQuestions: true,
+        repeatIncorrectQuestions: false,
         practiceOnlyMistakes: false,
       }}
       schema={sessionConfigSchema}
@@ -68,6 +68,8 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
               })}
             >
               <SwitchFormField
+                // TODO: Enable when feature is ready
+                disabled
                 form={form}
                 name="repeatIncorrectQuestions"
                 label={intl.formatMessage({
