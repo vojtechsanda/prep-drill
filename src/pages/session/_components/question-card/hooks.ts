@@ -10,3 +10,19 @@ export function useDefaultValues(question: Question): QuestionCardAnswers {
     })),
   };
 }
+
+export function useCheckAnswers(question: Question) {
+  return (data: QuestionCardAnswers) => {
+    const checkedAnswers = {} as Record<string, boolean>;
+
+    data.answers.forEach((answer) => {
+      const shouldBeChecked = !!question.answers.find(
+        (_answer) => answer.id === _answer.id,
+      )?.isCorrect;
+
+      checkedAnswers[answer.id] = shouldBeChecked === answer.checked;
+    });
+
+    return checkedAnswers;
+  };
+}

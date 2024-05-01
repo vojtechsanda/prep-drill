@@ -15,7 +15,10 @@ export function Session() {
 
   return (
     sessionInfo.currentQuestion && (
-      <QuestionCard question={sessionInfo.currentQuestion} />
+      <QuestionCard
+        sessionInfo={sessionInfo}
+        question={sessionInfo.currentQuestion}
+      />
     )
   );
 }

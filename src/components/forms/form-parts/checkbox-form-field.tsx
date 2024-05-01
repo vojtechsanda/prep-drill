@@ -35,7 +35,8 @@ export function CheckboxFormField<T extends FieldValues>({
         <FormItem>
           <FormLabel
             className={cn(
-              "flex flex-row items-start p-4 space-x-3 space-y-0 border rounded-md cursor-pointer",
+              "flex flex-row items-start p-4 space-x-3 space-y-0 border rounded-md",
+              props.disabled ? "cursor-default" : "cursor-pointer",
               className,
             )}
           >

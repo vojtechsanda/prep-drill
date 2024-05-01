@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useIntl } from "react-intl";
 
 import { Form } from "@/components/forms";
 import { CheckboxFormField } from "@/components/forms/form-parts";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,20 +11,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { Question } from "@/schemas";
 
-import { useDefaultValues } from "./hooks";
-import { questionCardAnswersSchema } from "./schema";
+import { SessionInfo } from "../../hooks";
+import { FooterButtons } from "./footer-buttons";
+import { useCheckAnswers, useDefaultValues } from "./hooks";
+import { QuestionCardAnswers, questionCardAnswersSchema } from "./schema";
 
-type QuestionCardProps = {
+export type QuestionCardProps = {
+  sessionInfo: Omit<SessionInfo, "currentQuestion">;
   question: Question;
 };
 
-export function QuestionCard({ question }: QuestionCardProps) {
-  const intl = useIntl();
+export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
   const defaultValues = useDefaultValues(question);
+  const checkAnswers = useCheckAnswers(question);
 
-  const handleSubmit = console.log;
+  const [checkedResult, setCheckedResult] = useState<Record<string, boolean>>(
+    {},
+  );
+
+  const handleSubmit = async (data: QuestionCardAnswers) => {
+    const checkedAnswers = checkAnswers(data);
+    setCheckedResult(checkedAnswers);
+  };
 
   const form = useForm({
     defaultValues,
@@ -49,34 +59,22 @@ export function QuestionCard({ question }: QuestionCardProps) {
                 name={`answers.${index}.checked`}
                 key={answer.id}
                 label={answer.text}
+                disabled={form.formState.isSubmitted}
+                className={cn({
+                  "bg-red-400": checkedResult[answer.id] === false,
+                  "bg-green-400": checkedResult[answer.id] === true,
+                })}
               />
             ))}
           </div>
         </CardContent>
 
-        <CardFooter className="flex justify-between">
-          <Button variant="outline" type="button">
-            {intl.formatMessage({
-              id: "session.question-card.buttons.previous",
-              defaultMessage: "Previous question",
-            })}
-          </Button>
-
-          {form.formState.isSubmitted ? (
-            <Button type="button">
-              {intl.formatMessage({
-                id: "session.question-card.buttons.next",
-                defaultMessage: "Next question",
-              })}
-            </Button>
-          ) : (
-            <Button type="submit">
-              {intl.formatMessage({
-                id: "session.question-card.buttons.submit",
-                defaultMessage: "Check answers",
-              })}
-            </Button>
-          )}
+        <CardFooter className="flex flex-wrap-reverse justify-center gap-x-12 gap-y-4 sm:justify-between">
+          <FooterButtons
+            sessionInfo={sessionInfo}
+            question={question}
+            form={form}
+          />
         </CardFooter>
       </Card>
     </Form>
