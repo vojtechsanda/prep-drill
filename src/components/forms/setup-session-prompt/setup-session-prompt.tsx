@@ -4,17 +4,21 @@ import { useIntl } from "react-intl";
 
 import { Prompt } from "@/components";
 import { Button } from "@/components/ui/button";
+import { useSavedSessionQuery } from "@/hooks/storage/session";
 import { sessionConfigSchema } from "@/schemas";
 
 import { SwitchFormField } from "../form-parts";
+import { useHandleSubmit } from "./hooks";
 import { OptionsSection } from "./options-section";
 
 export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
   const intl = useIntl();
-  const handleSubmit = console.log;
+  const handleSubmit = useHandleSubmit();
 
-  // TODO: Connect to the actual number of mistakes
-  const previousMistakesCount = 0;
+  const sessionQuery = useSavedSessionQuery();
+
+  const previousMistakesCount =
+    sessionQuery.data?.incorrectQuestionsIds.length ?? 0;
 
   return (
     <Prompt
@@ -30,63 +34,65 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
         defaultMessage: "Setup drill session",
       })}
       onSubmit={handleSubmit}
-      content={(form) => (
-        <div className="flex flex-col w-full gap-4">
-          <OptionsSection
-            label={intl.formatMessage({
-              id: "setup-session.shuffling-options",
-              defaultMessage: "Shuffling options",
-            })}
-          >
-            <SwitchFormField
-              form={form}
-              name="shuffleQuestions"
+      content={(form) =>
+        sessionQuery.isLoading ? null : (
+          <div className="flex flex-col w-full gap-4">
+            <OptionsSection
               label={intl.formatMessage({
-                id: "setup-session.randomize-questions",
-                defaultMessage: "Randomize question order",
+                id: "setup-session.shuffling-options",
+                defaultMessage: "Shuffling options",
               })}
-            />
-            <SwitchFormField
-              form={form}
-              name="shuffleAnswers"
+            >
+              <SwitchFormField
+                form={form}
+                name="shuffleQuestions"
+                label={intl.formatMessage({
+                  id: "setup-session.randomize-questions",
+                  defaultMessage: "Randomize question order",
+                })}
+              />
+              <SwitchFormField
+                form={form}
+                name="shuffleAnswers"
+                label={intl.formatMessage({
+                  id: "setup-session.randomize-answers",
+                  defaultMessage: "Randomize answer order",
+                })}
+              />
+            </OptionsSection>
+            <OptionsSection
               label={intl.formatMessage({
-                id: "setup-session.randomize-answers",
-                defaultMessage: "Randomize answer order",
+                id: "setup-session.mistakes-management",
+                defaultMessage: "Mistakes management",
               })}
-            />
-          </OptionsSection>
-          <OptionsSection
-            label={intl.formatMessage({
-              id: "setup-session.mistakes-management",
-              defaultMessage: "Mistakes management",
-            })}
-          >
-            <SwitchFormField
-              form={form}
-              name="repeatIncorrectQuestions"
-              label={intl.formatMessage({
-                id: "setup-session.repeat-incorrect",
-                defaultMessage: "Repeat incorrectly answered questions",
-              })}
-            />
-            <SwitchFormField
-              form={form}
-              name="practiceOnlyMistakes"
-              disabled={!previousMistakesCount}
-              label={intl.formatMessage(
-                {
-                  id: "setup-session.practice-previous-mistakes",
-                  defaultMessage:
-                    "Practice only previous mistakes ({count} mistakes)",
-                },
-                {
-                  count: previousMistakesCount,
-                },
-              )}
-            />
-          </OptionsSection>
-        </div>
-      )}
+            >
+              <SwitchFormField
+                form={form}
+                name="repeatIncorrectQuestions"
+                label={intl.formatMessage({
+                  id: "setup-session.repeat-incorrect",
+                  defaultMessage: "Repeat incorrectly answered questions",
+                })}
+              />
+              <SwitchFormField
+                form={form}
+                name="practiceOnlyMistakes"
+                disabled={!previousMistakesCount}
+                label={intl.formatMessage(
+                  {
+                    id: "setup-session.practice-previous-mistakes",
+                    defaultMessage:
+                      "Practice only previous mistakes ({count} mistakes)",
+                  },
+                  {
+                    count: previousMistakesCount,
+                  },
+                )}
+              />
+            </OptionsSection>
+          </div>
+        )
+      }
       submitButtonContent={
         <>
           <GraduationCap />
