@@ -2,7 +2,7 @@ import { useIntl } from "react-intl";
 
 import { useToast } from "@/components/ui/use-toast";
 import { useQuestionsFileProcessing } from "@/hooks/import";
-import { useSaveQuestionsMutation } from "@/hooks/storage";
+import { useSaveQuestionsMutation } from "@/hooks/storage/questions";
 import { ImportQuestionsSchema } from "@/schemas";
 
 export const useHandleSubmit = () => {

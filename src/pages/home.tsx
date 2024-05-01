@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import { ImportQuestionsPrompt } from "@/components/forms";
 import { SetupSessionPrompt } from "@/components/forms/setup-session-prompt";
 import { Button } from "@/components/ui/button";
-import { useSavedQuestionsQuery } from "@/hooks/storage";
+import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 
 export function Home() {
   const intl = useIntl();
