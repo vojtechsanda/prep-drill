@@ -18,12 +18,13 @@ export function StatisticsUnit({
   return (
     <div className="flex items-center gap-3">
       <Badge
+        variant="unset"
         className={cn(
           "w-10 flex justify-center",
           {
-            "bg-success": type === "CORRECT",
-            "bg-warning": type === "PARTIALLY",
-            "bg-destructive": type === "INCORRECT",
+            "bg-success text-success-foreground": type === "CORRECT",
+            "bg-warning text-warning-foreground": type === "PARTIALLY",
+            "bg-destructive text-destructive-foreground": type === "INCORRECT",
             "bg-gray-200 text-black": type === "OTHER",
           },
           className,

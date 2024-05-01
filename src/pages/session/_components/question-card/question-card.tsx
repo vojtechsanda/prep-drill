@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useIntl } from "react-intl";
 
+import { StatisticsUnit } from "@/components";
 import { Form } from "@/components/forms";
 import { CheckboxFormField } from "@/components/forms/form-parts";
 import {
@@ -25,6 +27,7 @@ export type QuestionCardProps = {
 };
 
 export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
+  const intl = useIntl();
   const shuffledAnswers = useMemo(
     () =>
       sessionInfo.session.config.shuffleAnswers
@@ -86,7 +89,29 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
           </div>
         </CardContent>
 
-        <CardFooter className="flex justify-center sm:justify-end">
+        <CardFooter className="flex flex-wrap-reverse justify-center gap-x-16 gap-y-6 sm:justify-between">
+          <div className="flex items-center justify-center gap-2 sm:gap-3">
+            <span className="text-sm sm:text-base">
+              {intl.formatMessage({
+                id: "session.questionCard.stats",
+                defaultMessage: "Statistics",
+              })}
+              :
+            </span>
+
+            <StatisticsUnit type="CORRECT" count={sessionInfo.stats.correct} />
+
+            <StatisticsUnit
+              type="PARTIALLY"
+              count={sessionInfo.stats.partiallyCorrect}
+            />
+
+            <StatisticsUnit
+              type="INCORRECT"
+              count={sessionInfo.stats.incorrect}
+            />
+          </div>
+
           <FooterButtons
             sessionInfo={sessionInfo}
             question={question}
