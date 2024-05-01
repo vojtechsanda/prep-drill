@@ -12,7 +12,7 @@ export function useSavedQuestionsQuery() {
   const questionsSchema = useQuestionsSchema();
   const { toast } = useToast();
 
-  const value = useQuery({
+  return useQuery({
     queryKey: allQuestionsQueryKey,
     queryFn: () => {
       const valueFromStorage =
@@ -42,6 +42,4 @@ export function useSavedQuestionsQuery() {
       return [];
     },
   });
-
-  return value.data ?? [];
 }

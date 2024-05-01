@@ -8,7 +8,12 @@ import { useSavedQuestionsQuery } from "@/hooks/storage";
 export function Home() {
   const intl = useIntl();
 
-  const questions = useSavedQuestionsQuery();
+  const questionsQuery = useSavedQuestionsQuery();
+  const questions = questionsQuery.data ?? [];
+
+  if (questionsQuery.isLoading) {
+    return null;
+  }
 
   return (
     <>
@@ -30,27 +35,29 @@ export function Home() {
             })}
           </h2>
 
-          {!!questions.length && (
-            <div className="flex items-center gap-4">
-              <Button>
-                <GraduationCap />
-                {intl.formatMessage({
-                  id: "homepage.buttons.start-drilling",
-                  defaultMessage: "Start drilling",
-                })}
-              </Button>
-            </div>
-          )}
-          <ImportQuestionsPrompt>
-            {questions.length ? (
-              <Button variant="link">
-                {intl.formatMessage({
-                  id: "homepage.import.import-new-questions",
-                  defaultMessage: "Import new questions",
-                })}
-              </Button>
-            ) : null}
-          </ImportQuestionsPrompt>
+          <div className="flex flex-col items-center gap-2">
+            {!!questions.length && (
+              <div className="flex items-center gap-4">
+                <Button>
+                  <GraduationCap />
+                  {intl.formatMessage({
+                    id: "homepage.buttons.start-drilling",
+                    defaultMessage: "Start drilling",
+                  })}
+                </Button>
+              </div>
+            )}
+            <ImportQuestionsPrompt>
+              {questions.length ? (
+                <Button variant="link">
+                  {intl.formatMessage({
+                    id: "homepage.import.import-new-questions",
+                    defaultMessage: "Import new questions",
+                  })}
+                </Button>
+              ) : null}
+            </ImportQuestionsPrompt>
+          </div>
         </div>
       </div>
     </>
