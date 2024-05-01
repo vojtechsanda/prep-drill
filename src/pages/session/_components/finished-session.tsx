@@ -12,15 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useSessionInfo } from "@/hooks/session";
 
-import { SessionInfo } from "../hooks";
-
-type FinishedSessionProps = {
-  sessionInfo: SessionInfo;
-};
-
-export function FinishedSession({ sessionInfo }: FinishedSessionProps) {
+export function FinishedSession() {
   const intl = useIntl();
+
+  const sessionInfo = useSessionInfo();
+  if (!sessionInfo) return null;
 
   return (
     <Card className="w-full max-w-md">

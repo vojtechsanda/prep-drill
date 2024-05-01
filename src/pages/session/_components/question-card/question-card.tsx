@@ -13,21 +13,37 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
+import { SessionInfo, useSessionInfo } from "@/hooks/session";
 import { cn, shuffle } from "@/lib/utils";
 import { Question } from "@/schemas";
 
-import { SessionInfo } from "../../hooks";
 import { FooterButtons } from "./footer-buttons";
-import { useDefaultValues, useHandleSubmit, useProcessAnswers } from "./hooks";
+import { useDefaultValues, useProcessAnswers, useSaveAnswers } from "./hooks";
 import { QuestionCardAnswers, questionCardAnswersSchema } from "./schema";
 
-export type QuestionCardProps = {
-  sessionInfo: Omit<SessionInfo, "currentQuestion">;
+type _QuestionCardProps = {
   question: Question;
+  sessionInfo: SessionInfo;
 };
 
-export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
+export function QuestionCard() {
+  const sessionInfo = useSessionInfo();
+
+  if (!sessionInfo?.currentQuestion) return null;
+
+  return (
+    <_QuestionCard
+      question={sessionInfo.currentQuestion}
+      sessionInfo={sessionInfo}
+    />
+  );
+}
+
+function _QuestionCard({ question, sessionInfo }: _QuestionCardProps) {
   const intl = useIntl();
+  const { toast } = useToast();
+
   const shuffledAnswers = useMemo(
     () =>
       sessionInfo.session.config.shuffleAnswers
@@ -39,7 +55,7 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
   const defaultValues = useDefaultValues(shuffledAnswers);
 
   const processAnswers = useProcessAnswers(question);
-  const handleSubmit = useHandleSubmit();
+  const saveAnswers = useSaveAnswers();
 
   const [answersResult, setAnswersResult] = useState<
     Record<string, boolean | null>
@@ -49,10 +65,19 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
     const processedAnswers = processAnswers(data);
     setAnswersResult(processedAnswers);
 
-    handleSubmit({
-      sessionInfo: { ...sessionInfo, currentQuestion: question },
-      answersResult: processedAnswers,
-    });
+    try {
+      await saveAnswers(processedAnswers);
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: intl.formatMessage({
+          id: "question-card.error.saveAnswers",
+          defaultMessage: "Failed to save answers",
+        }),
+        variant: "destructive",
+      });
+    }
   };
 
   const form = useForm({
@@ -100,24 +125,17 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
             </span>
 
             <StatisticsUnit type="CORRECT" count={sessionInfo.stats.correct} />
-
             <StatisticsUnit
               type="PARTIALLY"
               count={sessionInfo.stats.partiallyCorrect}
             />
-
             <StatisticsUnit
               type="INCORRECT"
               count={sessionInfo.stats.incorrect}
             />
           </div>
 
-          <FooterButtons
-            sessionInfo={sessionInfo}
-            question={question}
-            onReset={() => setAnswersResult({})}
-            form={form}
-          />
+          <FooterButtons onReset={() => setAnswersResult({})} form={form} />
         </CardFooter>
       </Card>
     </Form>

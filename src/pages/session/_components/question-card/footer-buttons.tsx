@@ -3,31 +3,31 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
 import { Button } from "@/components/ui/button";
-
-import { QuestionCardProps } from "./question-card";
+import { useSessionInfo } from "@/hooks/session";
 
 type FooterButtonsProps<T extends FieldValues> = {
   form: ReturnType<typeof useForm<T>>;
   onReset: () => void;
-} & QuestionCardProps;
+};
 
 export function FooterButtons<T extends FieldValues>({
-  sessionInfo,
-  question,
   onReset,
   form,
 }: FooterButtonsProps<T>) {
   const intl = useIntl();
 
-  const isLastQuestion =
-    sessionInfo.session.questionsIds.slice(-1)[0] === question.id;
+  const sessionInfo = useSessionInfo();
+  const question = sessionInfo?.currentQuestion;
 
-  const { onNextQuestion, onFinish } = sessionInfo;
+  const isLastQuestion =
+    question && sessionInfo?.session.questionsIds.slice(-1)[0] === question.id;
+
+  const { onNextQuestion, onFinish } = sessionInfo ?? {};
 
   const handleNextQuestion = async () => {
     onReset();
     form.reset();
-    await onNextQuestion();
+    await onNextQuestion?.();
   };
 
   return (

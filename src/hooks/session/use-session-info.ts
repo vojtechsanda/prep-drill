@@ -1,18 +1,22 @@
-import { useQueryClient } from "@tanstack/react-query";
-
+import { useFinish } from "@/hooks/session/use-finish";
+import { useNextQuestion } from "@/hooks/session/use-next-question";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
-import { sessionQueryKey } from "@/hooks/storage/session/use-saved-session-query";
-import { Session } from "@/schemas";
+import { useSavedSessionQuery } from "@/hooks/storage/session";
 
-export type SessionInfo = ReturnType<ReturnType<typeof useGetSessionInfo>>;
+export type SessionInfo = Exclude<ReturnType<typeof useSessionInfo>, null>;
 
-export const useGetSessionInfo = () => {
+export function useSessionInfo() {
+  const sessionQuery = useSavedSessionQuery();
+  const questionsQuery = useSavedQuestionsQuery();
+
   const onNextQuestion = useNextQuestion();
   const onFinish = useFinish();
 
-  const questionsQuery = useSavedQuestionsQuery();
+  const session = sessionQuery.data;
 
-  return (session: Session) => ({
+  if (!session) return null;
+
+  return {
     session,
     allQuestions: questionsQuery.data ?? [],
     isFinished: session.status === "FINISHED",
@@ -31,25 +35,5 @@ export const useGetSessionInfo = () => {
     },
     onNextQuestion,
     onFinish,
-  });
-};
-
-function useNextQuestion() {
-  const queryClient = useQueryClient();
-
-  return async () => {
-    await queryClient.invalidateQueries({
-      queryKey: sessionQueryKey,
-    });
-  };
-}
-
-function useFinish() {
-  const queryClient = useQueryClient();
-
-  return async () => {
-    await queryClient.invalidateQueries({
-      queryKey: sessionQueryKey,
-    });
   };
 }

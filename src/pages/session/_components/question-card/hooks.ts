@@ -1,7 +1,7 @@
+import { useSessionInfo } from "@/hooks/session";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { Answer, Question } from "@/schemas";
 
-import { SessionInfo } from "../../hooks";
 import { QuestionCardAnswers } from "./schema";
 
 export function useDefaultValues(answers: Answer[]): QuestionCardAnswers {
@@ -46,17 +46,19 @@ export function useProcessAnswers(question: Question) {
   };
 }
 
-type HandleSubmitProps = {
-  sessionInfo: SessionInfo;
-  answersResult: Record<string, boolean | null>;
-};
-
-export function useHandleSubmit() {
+export function useSaveAnswers() {
+  const sessionInfo = useSessionInfo();
   const { mutateAsync: saveSession } = useSaveSessionMutation();
 
-  return async ({ sessionInfo, answersResult }: HandleSubmitProps) => {
+  return async (answersResult: Record<string, boolean | null>) => {
+    if (!sessionInfo) {
+      throw new Error("Session info is not available");
+    }
+
     const question = sessionInfo.currentQuestion;
-    if (!question) return;
+    if (!question) {
+      throw new Error("Question is not available");
+    }
 
     const someNotChecked = Object.values(answersResult).some(
       (val) => val === null,
