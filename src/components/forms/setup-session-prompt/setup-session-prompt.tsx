@@ -18,7 +18,8 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
   const sessionQuery = useSavedSessionQuery();
 
   const previousMistakesCount =
-    sessionQuery.data?.incorrectQuestionsIds.length ?? 0;
+    (sessionQuery.data?.incorrectQuestionsIds.length ?? 0) +
+    (sessionQuery.data?.partiallyCorrectQuestionsIds.length ?? 0);
 
   return (
     <Prompt

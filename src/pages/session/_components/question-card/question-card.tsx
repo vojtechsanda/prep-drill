@@ -16,7 +16,7 @@ import { Question } from "@/schemas";
 
 import { SessionInfo } from "../../hooks";
 import { FooterButtons } from "./footer-buttons";
-import { useCheckAnswers, useDefaultValues } from "./hooks";
+import { useDefaultValues, useHandleSubmit, useProcessAnswers } from "./hooks";
 import { QuestionCardAnswers, questionCardAnswersSchema } from "./schema";
 
 export type QuestionCardProps = {
@@ -25,23 +25,6 @@ export type QuestionCardProps = {
 };
 
 export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
-  const defaultValues = useDefaultValues(question);
-  const checkAnswers = useCheckAnswers(question);
-
-  const [checkedResult, setCheckedResult] = useState<Record<string, boolean>>(
-    {},
-  );
-
-  const handleSubmit = async (data: QuestionCardAnswers) => {
-    const checkedAnswers = checkAnswers(data);
-    setCheckedResult(checkedAnswers);
-  };
-
-  const form = useForm({
-    defaultValues,
-    resolver: zodResolver(questionCardAnswersSchema),
-  });
-
   const shuffledAnswers = useMemo(
     () =>
       sessionInfo.session.config.shuffleAnswers
@@ -50,8 +33,32 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
     [question.answers, sessionInfo.session.config.shuffleAnswers],
   );
 
+  const defaultValues = useDefaultValues(shuffledAnswers);
+
+  const processAnswers = useProcessAnswers(question);
+  const handleSubmit = useHandleSubmit();
+
+  const [answersResult, setAnswersResult] = useState<
+    Record<string, boolean | null>
+  >({});
+
+  const onSubmit = async (data: QuestionCardAnswers) => {
+    const processedAnswers = processAnswers(data);
+    setAnswersResult(processedAnswers);
+
+    handleSubmit({
+      sessionInfo: { ...sessionInfo, currentQuestion: question },
+      answersResult: processedAnswers,
+    });
+  };
+
+  const form = useForm({
+    defaultValues,
+    resolver: zodResolver(questionCardAnswersSchema),
+  });
+
   return (
-    <Form onSubmit={handleSubmit} form={form} className="w-full max-w-2xl">
+    <Form onSubmit={onSubmit} form={form} className="w-full max-w-2xl">
       <Card>
         <CardHeader>
           <CardTitle className="text-base sm:text-lg">
@@ -69,8 +76,10 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
                 label={answer.text}
                 disabled={form.formState.isSubmitted}
                 className={cn({
-                  "bg-red-400": checkedResult[answer.id] === false,
-                  "bg-green-400": checkedResult[answer.id] === true,
+                  "bg-red-400": answersResult[answer.id] === false,
+                  "bg-green-400":
+                    answersResult[answer.id] === true ||
+                    answersResult[answer.id] === null,
                 })}
               />
             ))}
@@ -81,6 +90,7 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
           <FooterButtons
             sessionInfo={sessionInfo}
             question={question}
+            onReset={() => setAnswersResult({})}
             form={form}
           />
         </CardFooter>

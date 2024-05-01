@@ -8,11 +8,13 @@ import { QuestionCardProps } from "./question-card";
 
 type FooterButtonsProps<T extends FieldValues> = {
   form: ReturnType<typeof useForm<T>>;
+  onReset: () => void;
 } & QuestionCardProps;
 
 export function FooterButtons<T extends FieldValues>({
   sessionInfo,
   question,
+  onReset,
   form,
 }: FooterButtonsProps<T>) {
   const intl = useIntl();
@@ -22,10 +24,16 @@ export function FooterButtons<T extends FieldValues>({
 
   const { onNextQuestion, onFinish } = sessionInfo;
 
+  const handleNextQuestion = async () => {
+    onReset();
+    form.reset();
+    await onNextQuestion();
+  };
+
   return (
     <>
       {form.formState.isSubmitted && !isLastQuestion && (
-        <Button type="button" className="gap-1" onClick={onNextQuestion}>
+        <Button type="button" className="gap-1" onClick={handleNextQuestion}>
           {intl.formatMessage({
             id: "session.question-card.buttons.next",
             defaultMessage: "Next question",

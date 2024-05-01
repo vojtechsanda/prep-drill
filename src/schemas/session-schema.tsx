@@ -12,6 +12,7 @@ export const sessionSchema = z
     config: sessionConfigSchema,
     questionsIds: z.array(z.string()).min(1),
     correctQuestionsIds: z.array(z.string()),
+    partiallyCorrectQuestionsIds: z.array(z.string()),
     incorrectQuestionsIds: z.array(z.string()),
     currentQuestionId: z.string().nullish(),
   })

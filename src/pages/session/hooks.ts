@@ -1,5 +1,8 @@
+import { useQueryClient } from "@tanstack/react-query";
+
 import { useToast } from "@/components/ui/use-toast";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
+import { sessionQueryKey } from "@/hooks/storage/session/use-saved-session-query";
 import { Session } from "@/schemas";
 
 export type SessionInfo = ReturnType<ReturnType<typeof useGetSessionInfo>>;
@@ -21,22 +24,25 @@ export const useGetSessionInfo = () => {
       total: session.questionsIds.length,
       answered:
         session.correctQuestionsIds.length +
+        session.partiallyCorrectQuestionsIds.length +
         session.incorrectQuestionsIds.length,
       correct: session.correctQuestionsIds.length,
+      partiallyCorrect: session.partiallyCorrectQuestionsIds.length,
       incorrect: session.incorrectQuestionsIds.length,
     },
-    onNextQuestion,
+    onNextQuestion: async () => onNextQuestion(session),
     onFinish,
   });
 };
 
 function useNextQuestion() {
-  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  return () => {
-    toast({
-      title: "TODO: useNextQuestion",
-      description: "Hook has not been implemented yet",
+  return async (session: Session) => {
+    if (!session.currentQuestionId) return;
+
+    await queryClient.invalidateQueries({
+      queryKey: sessionQueryKey,
     });
   };
 }

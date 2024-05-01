@@ -20,6 +20,7 @@ export const useHandleSubmit = () => {
       status: "IN_PROGRESS",
       config,
       correctQuestionsIds: [],
+      partiallyCorrectQuestionsIds: [],
       incorrectQuestionsIds: [],
     };
 
