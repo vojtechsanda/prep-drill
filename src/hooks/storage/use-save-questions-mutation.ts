@@ -19,7 +19,7 @@ export function useSaveQuestionsMutation() {
         JSON.stringify(questions),
       );
 
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: allQuestionsQueryKey,
         refetchType: "all",
       });
