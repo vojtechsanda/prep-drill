@@ -16,44 +16,39 @@ export function Home() {
   }
 
   return (
-    <>
-      <div className="grid items-center h-full justify-items-center">
-        <div className="flex flex-col items-center gap-6">
-          <h1 className="text-4xl text-center">
-            {intl.formatMessage({
-              id: "homepage.title.welcome-to",
-              defaultMessage: "Welcome to",
-            })}{" "}
-            <span className="font-bold">PrepDrill</span>
-          </h1>
+    <div className="flex flex-col items-center gap-6">
+      <h1 className="text-4xl text-center">
+        {intl.formatMessage({
+          id: "homepage.title.welcome-to",
+          defaultMessage: "Welcome to",
+        })}{" "}
+        <span className="font-bold">PrepDrill</span>
+      </h1>
 
-          <h2 className="text-2xl text-center">
-            {intl.formatMessage({
-              id: "homepage.subtitle",
-              defaultMessage:
-                "Simple application for drilling questions for exams",
-            })}
-          </h2>
+      <h2 className="text-2xl text-center">
+        {intl.formatMessage({
+          id: "homepage.subtitle",
+          defaultMessage: "Simple application for drilling questions for exams",
+        })}
+      </h2>
 
-          <div className="flex flex-col items-center gap-2">
-            {!!questions.length && (
-              <div className="flex items-center gap-4">
-                <SetupSessionPrompt />
-              </div>
-            )}
-            <ImportQuestionsPrompt>
-              {questions.length ? (
-                <Button variant="link">
-                  {intl.formatMessage({
-                    id: "homepage.import.import-new-questions",
-                    defaultMessage: "Import new questions",
-                  })}
-                </Button>
-              ) : null}
-            </ImportQuestionsPrompt>
+      <div className="flex flex-col items-center gap-2">
+        {!!questions.length && (
+          <div className="flex items-center gap-4">
+            <SetupSessionPrompt />
           </div>
-        </div>
+        )}
+        <ImportQuestionsPrompt>
+          {questions.length ? (
+            <Button variant="link">
+              {intl.formatMessage({
+                id: "homepage.import.import-new-questions",
+                defaultMessage: "Import new questions",
+              })}
+            </Button>
+          ) : null}
+        </ImportQuestionsPrompt>
       </div>
-    </>
+    </div>
   );
 }
