@@ -36,7 +36,7 @@ export const useHandleSubmit = () => {
       : questions;
 
     session.questionsIds = shuffledQuestions.map((question) => question.id);
-    session.currentQuestion = session.questionsIds[0];
+    session.currentQuestionId = session.questionsIds[0];
 
     const parsedSession = await sessionSchema.parseAsync(session);
 
