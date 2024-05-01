@@ -5,7 +5,6 @@ import { Session } from "@/schemas";
 export type SessionInfo = ReturnType<ReturnType<typeof useGetSessionInfo>>;
 
 export const useGetSessionInfo = () => {
-  const onPreviousQuestion = usePreviousQuestion();
   const onNextQuestion = useNextQuestion();
   const onFinish = useFinish();
 
@@ -26,22 +25,10 @@ export const useGetSessionInfo = () => {
       correct: session.correctQuestionsIds.length,
       incorrect: session.incorrectQuestionsIds.length,
     },
-    onPreviousQuestion,
     onNextQuestion,
     onFinish,
   });
 };
-
-function usePreviousQuestion() {
-  const { toast } = useToast();
-
-  return () => {
-    toast({
-      title: "TODO: usePreviousQuestion",
-      description: "Hook has not been implemented yet",
-    });
-  };
-}
 
 function useNextQuestion() {
   const { toast } = useToast();

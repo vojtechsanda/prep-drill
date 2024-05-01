@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Form } from "@/components/forms";
@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, shuffle } from "@/lib/utils";
 import { Question } from "@/schemas";
 
 import { SessionInfo } from "../../hooks";
@@ -42,6 +42,14 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
     resolver: zodResolver(questionCardAnswersSchema),
   });
 
+  const shuffledAnswers = useMemo(
+    () =>
+      sessionInfo.session.config.shuffleAnswers
+        ? shuffle(question.answers)
+        : question.answers,
+    [question.answers, sessionInfo.session.config.shuffleAnswers],
+  );
+
   return (
     <Form onSubmit={handleSubmit} form={form} className="w-full max-w-2xl">
       <Card>
@@ -53,7 +61,7 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
 
         <CardContent>
           <div className="flex flex-col gap-4">
-            {question.answers.map((answer, index) => (
+            {shuffledAnswers.map((answer, index) => (
               <CheckboxFormField
                 form={form}
                 name={`answers.${index}.checked`}
@@ -69,7 +77,7 @@ export function QuestionCard({ sessionInfo, question }: QuestionCardProps) {
           </div>
         </CardContent>
 
-        <CardFooter className="flex flex-wrap-reverse justify-center gap-x-12 gap-y-4 sm:justify-between">
+        <CardFooter className="flex justify-center sm:justify-end">
           <FooterButtons
             sessionInfo={sessionInfo}
             question={question}
