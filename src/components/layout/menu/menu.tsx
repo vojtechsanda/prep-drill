@@ -1,12 +1,32 @@
+import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
 import LogoUrl from "@/assets/logo.svg";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 import { useMenuItems } from "./hooks";
 
 export function Menu() {
+  const intl = useIntl();
   const menuItems = useMenuItems();
+
+  const { toast } = useToast();
+
+  const todoToast = (title: string) =>
+    toast({
+      title: intl.formatMessage({
+        id: "menu.todo.title",
+        defaultMessage: "Feature under construction",
+      }),
+      description: intl.formatMessage(
+        {
+          id: "menu.todo.description",
+          defaultMessage: 'Sorry, feature "{title}" is not ready yet.',
+        },
+        { title },
+      ),
+    });
 
   return (
     <div className="flex items-center justify-between">
@@ -22,18 +42,30 @@ export function Menu() {
       <div className="flex gap-2">
         {/* Desktop */}
         {menuItems.map((item) => (
-          <Button asChild key={item.url} className="hidden sm:flex">
-            <Link to={item.url}>
-              {item.icon}
-              {item.title}
-            </Link>
+          <Button
+            /*asChild*/ key={item.url}
+            className="hidden sm:flex"
+            onClick={() => todoToast(item.title)}
+          >
+            {/* <Link to={item.url}> */}
+
+            {item.icon}
+            {item.title}
+            {/* </Link> */}
           </Button>
         ))}
 
         {/* Mobile */}
         {menuItems.map((item) => (
-          <Button asChild size="icon" key={item.url} className="sm:hidden">
-            <Link to={item.url}>{item.icon}</Link>
+          <Button
+            /*asChild*/ size="icon"
+            key={item.url}
+            className="sm:hidden"
+            onClick={() => todoToast(item.title)}
+          >
+            {/* <Link to={item.url}> */}
+            {item.icon}
+            {/* </Link> */}
           </Button>
         ))}
       </div>

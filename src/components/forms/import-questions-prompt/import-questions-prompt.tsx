@@ -23,6 +23,7 @@ export function ImportQuestionsPrompt({
         id: "import-questions.title",
         defaultMessage: "Import questions",
       })}
+      // TODO: Add link to example format or link to all questions, where user would add questions manually
       description={intl.formatMessage({
         id: "import-questions.description",
         defaultMessage:
