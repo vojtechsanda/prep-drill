@@ -5,7 +5,7 @@ import { sessionConfigSchema } from "./session-config-schema";
 function useAnswerInHistorySchema() {
   return z.object({
     questionId: z.string(),
-    answers: z.record(z.string(), z.boolean()),
+    answers: z.record(z.string(), z.boolean().nullable()),
   });
 }
 

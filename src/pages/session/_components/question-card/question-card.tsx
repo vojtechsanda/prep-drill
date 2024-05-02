@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { useSessionInfo } from "@/hooks/session";
+import { useSaveHistoryAnswer } from "@/hooks/storage/history";
 import { cn, shuffle } from "@/lib/utils";
 import { Question, SessionConfigSchema } from "@/schemas";
 
@@ -44,6 +45,8 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
   const intl = useIntl();
   const { toast } = useToast();
 
+  const sessionInfo = useSessionInfo();
+
   const shuffledAnswers = useMemo(
     () =>
       sessionConfig.shuffleAnswers
@@ -56,10 +59,23 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
 
   const processAnswers = useProcessAnswers(question);
   const saveAnswers = useSaveAnswers();
+  const saveAnswerToHistory = useSaveHistoryAnswer();
 
   const [answersResult, setAnswersResult] = useState<
     Record<string, boolean | null>
   >({});
+
+  // TODO: Try to make it key based, not array based (something as the processed answers)
+  const form = useForm({
+    defaultValues,
+    resolver: zodResolver(questionCardAnswersSchema),
+  });
+
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
+
+  if (!sessionInfo) return null;
 
   const onSubmit = async (data: QuestionCardAnswers) => {
     const processedAnswers = processAnswers(data);
@@ -78,20 +94,15 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
         variant: "destructive",
       });
     }
+
+    saveAnswerToHistory({
+      sessionId: sessionInfo.session.id,
+      answer: {
+        questionId: question.id,
+        answers: processedAnswers,
+      },
+    });
   };
-
-  // TODO: Try to make it key based, not array based (something as the processed answers)
-  const form = useForm({
-    defaultValues,
-    resolver: zodResolver(questionCardAnswersSchema),
-  });
-
-  useEffect(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form]);
-
-  const sessionInfo = useSessionInfo();
-  if (!sessionInfo) return null;
 
   return (
     <Form onSubmit={onSubmit} form={form} className="w-full max-w-2xl">

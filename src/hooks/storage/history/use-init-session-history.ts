@@ -1,12 +1,13 @@
-import { STORAGE_PREFIX } from "@/env";
 import { History, SessionInHistory } from "@/schemas/history-schema";
 
+import { useSaveHistoryMutation } from "./use-save-history-mutation";
 import { useSavedHistoryQuery } from "./use-saved-history-query";
 
 export function useInitSessionHistory() {
   const historyQuery = useSavedHistoryQuery();
+  const { mutate: saveHistory } = useSaveHistoryMutation();
 
-  return (session: SessionInHistory) => {
+  return async (session: SessionInHistory) => {
     if (historyQuery.isLoading) return;
 
     const history: History = historyQuery.data ?? {
@@ -21,7 +22,6 @@ export function useInitSessionHistory() {
     }
 
     history.sessions[session.id] = session;
-
-    localStorage.setItem(`${STORAGE_PREFIX}/history`, JSON.stringify(history));
+    saveHistory(history);
   };
 }
