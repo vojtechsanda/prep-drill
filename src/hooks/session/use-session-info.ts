@@ -13,7 +13,6 @@ export function useSessionInfo() {
 
   return {
     session,
-    allQuestions: questionsQuery.data ?? [],
     isFinished: session.status === "FINISHED",
     currentQuestion: questionsQuery.data?.find(
       (question) => question.id === session.currentQuestionId,
