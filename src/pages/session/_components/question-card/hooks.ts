@@ -1,6 +1,9 @@
 import { useMemo } from "react";
+import { useIntl } from "react-intl";
 
+import { useToast } from "@/components/ui/use-toast";
 import { useSessionInfo } from "@/hooks/session";
+import { useSaveHistoryAnswer } from "@/hooks/storage/history";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { Answer, Question } from "@/schemas";
 
@@ -85,20 +88,45 @@ export function useSaveAnswers() {
     }
 
     await saveSession(updatedSession);
+  };
+}
 
-    // TODO: Remove this workaround (next question should be updated after clicking next question button)
-    // TODO: This workaround is needed right now, because when user refreshes before clicking next, the current question is not updated - this could be fixed by saving all responses and loading it back on refresh -> showing user readonly results
-    // Update current question, it will be invalidated later (refresh, clicking the next question button)
-    const currentQuestionIndex = updatedSession.questionsIds.indexOf(
-      question.id,
-    );
-    updatedSession.currentQuestionId =
-      updatedSession.questionsIds[currentQuestionIndex + 1];
+export function useHandleSubmit(question: Question) {
+  const { toast } = useToast();
+  const intl = useIntl();
 
-    if (updatedSession.currentQuestionId === undefined) {
-      updatedSession.status = "FINISHED";
+  const processAnswers = useProcessAnswers(question);
+  const saveAnswers = useSaveAnswers();
+
+  const sessionInfo = useSessionInfo();
+  const saveAnswerToHistory = useSaveHistoryAnswer();
+
+  return async (data: QuestionCardAnswers) => {
+    if (!sessionInfo) return;
+
+    const processedAnswers = processAnswers(data);
+
+    try {
+      await saveAnswers(processedAnswers);
+    } catch (error) {
+      console.error(error);
+
+      toast({
+        title: intl.formatMessage({
+          id: "question-card.error.saveAnswers",
+          defaultMessage: "Failed to save answers",
+        }),
+        variant: "destructive",
+      });
     }
 
-    await saveSession({ session: updatedSession, invalidate: false });
+    // TODO: hook pro tohle si taky může udělat sessionInfo ne?
+    saveAnswerToHistory({
+      sessionId: sessionInfo.session.id,
+      answer: {
+        questionId: question.id,
+        answers: processedAnswers,
+      },
+    });
   };
 }

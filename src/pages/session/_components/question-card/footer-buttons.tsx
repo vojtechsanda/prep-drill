@@ -4,19 +4,20 @@ import { useIntl } from "react-intl";
 
 import { Button } from "@/components/ui/button";
 import { useSessionInfo } from "@/hooks/session";
+import { useQuestionResult } from "@/hooks/storage/history";
 
 type FooterButtonsProps<T extends FieldValues> = {
   form: ReturnType<typeof useForm<T>>;
-  onReset: () => void;
 };
 
 export function FooterButtons<T extends FieldValues>({
-  onReset,
   form,
 }: FooterButtonsProps<T>) {
   const intl = useIntl();
 
   const sessionInfo = useSessionInfo();
+  const questionResult = useQuestionResult();
+
   const question = sessionInfo?.currentQuestion;
 
   const isLastQuestion =
@@ -25,14 +26,13 @@ export function FooterButtons<T extends FieldValues>({
   const { onNextQuestion, onFinish } = sessionInfo ?? {};
 
   const handleNextQuestion = async () => {
-    onReset();
     form.reset();
     await onNextQuestion?.();
   };
 
   return (
     <>
-      {form.formState.isSubmitted && !isLastQuestion && (
+      {questionResult && !isLastQuestion && (
         <Button type="button" className="gap-1" onClick={handleNextQuestion}>
           {intl.formatMessage({
             id: "session.question-card.buttons.next",
@@ -42,7 +42,7 @@ export function FooterButtons<T extends FieldValues>({
         </Button>
       )}
 
-      {form.formState.isSubmitted && isLastQuestion && (
+      {questionResult && isLastQuestion && (
         <Button type="button" className="gap-1" onClick={onFinish}>
           <CheckCheck size={20} />
           {intl.formatMessage({
@@ -52,7 +52,7 @@ export function FooterButtons<T extends FieldValues>({
         </Button>
       )}
 
-      {!form.formState.isSubmitted && (
+      {!questionResult && (
         <Button type="submit" className="gap-1">
           <Check size={20} />
           {intl.formatMessage({

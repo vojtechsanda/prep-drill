@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
@@ -13,15 +13,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/components/ui/use-toast";
 import { useSessionInfo } from "@/hooks/session";
-import { useSaveHistoryAnswer } from "@/hooks/storage/history";
+import { useQuestionResult } from "@/hooks/storage/history";
 import { cn, shuffle } from "@/lib/utils";
 import { Question, SessionConfigSchema } from "@/schemas";
 
 import { FooterButtons } from "./footer-buttons";
-import { useDefaultValues, useProcessAnswers, useSaveAnswers } from "./hooks";
-import { QuestionCardAnswers, questionCardAnswersSchema } from "./schema";
+import { useDefaultValues, useHandleSubmit } from "./hooks";
+import { questionCardAnswersSchema } from "./schema";
 
 type _QuestionCardProps = {
   question: Question;
@@ -43,7 +42,6 @@ export function QuestionCard() {
 
 function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
   const intl = useIntl();
-  const { toast } = useToast();
 
   const sessionInfo = useSessionInfo();
 
@@ -57,13 +55,7 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
 
   const defaultValues = useDefaultValues(shuffledAnswers);
 
-  const processAnswers = useProcessAnswers(question);
-  const saveAnswers = useSaveAnswers();
-  const saveAnswerToHistory = useSaveHistoryAnswer();
-
-  const [answersResult, setAnswersResult] = useState<
-    Record<string, boolean | null>
-  >({});
+  const answersResult = useQuestionResult();
 
   // TODO: Try to make it key based, not array based (something as the processed answers)
   const form = useForm({
@@ -75,37 +67,12 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
     form.reset(defaultValues);
   }, [defaultValues, form]);
 
+  const handleSubmit = useHandleSubmit(question);
+
   if (!sessionInfo) return null;
 
-  const onSubmit = async (data: QuestionCardAnswers) => {
-    const processedAnswers = processAnswers(data);
-    setAnswersResult(processedAnswers);
-
-    try {
-      await saveAnswers(processedAnswers);
-    } catch (error) {
-      console.error(error);
-
-      toast({
-        title: intl.formatMessage({
-          id: "question-card.error.saveAnswers",
-          defaultMessage: "Failed to save answers",
-        }),
-        variant: "destructive",
-      });
-    }
-
-    saveAnswerToHistory({
-      sessionId: sessionInfo.session.id,
-      answer: {
-        questionId: question.id,
-        answers: processedAnswers,
-      },
-    });
-  };
-
   return (
-    <Form onSubmit={onSubmit} form={form} className="w-full max-w-2xl">
+    <Form onSubmit={handleSubmit} form={form} className="w-full max-w-2xl">
       <Card>
         <CardHeader>
           <CardTitle className="text-base sm:text-lg">
@@ -121,12 +88,12 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
                 name={`answers.${index}.checked`}
                 key={answer.id}
                 label={answer.text}
-                disabled={form.formState.isSubmitted}
+                disabled={answersResult !== null}
                 className={cn({
-                  "bg-red-400": answersResult[answer.id] === false,
+                  "bg-red-400": answersResult?.[answer.id] === false,
                   "bg-green-400":
-                    answersResult[answer.id] === true ||
-                    answersResult[answer.id] === null,
+                    answersResult?.[answer.id] === true ||
+                    answersResult?.[answer.id] === null,
                 })}
               />
             ))}
@@ -154,7 +121,7 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
             />
           </div>
 
-          <FooterButtons onReset={() => setAnswersResult({})} form={form} />
+          <FooterButtons form={form} />
         </CardFooter>
       </Card>
     </Form>
