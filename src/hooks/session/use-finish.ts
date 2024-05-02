@@ -1,13 +1,17 @@
-import { useQueryClient } from "@tanstack/react-query";
-
-import { sessionQueryKey } from "@/hooks/storage/session/use-saved-session-query";
+import { useSaveSessionMutation } from "../storage/session";
+import { useSessionInfo } from "./use-session-info";
 
 export function useFinish() {
-  const queryClient = useQueryClient();
+  const sessionInfo = useSessionInfo();
+
+  const { mutateAsync: saveSession } = useSaveSessionMutation();
 
   return async () => {
-    await queryClient.invalidateQueries({
-      queryKey: sessionQueryKey,
+    if (!sessionInfo) return;
+
+    await saveSession({
+      ...sessionInfo.session,
+      status: "FINISHED",
     });
   };
 }

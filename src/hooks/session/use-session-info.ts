@@ -1,4 +1,3 @@
-import { useFinish } from "@/hooks/session/use-finish";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import { useSavedSessionQuery } from "@/hooks/storage/session";
 
@@ -7,8 +6,6 @@ export type SessionInfo = Exclude<ReturnType<typeof useSessionInfo>, null>;
 export function useSessionInfo() {
   const sessionQuery = useSavedSessionQuery();
   const questionsQuery = useSavedQuestionsQuery();
-
-  const onFinish = useFinish();
 
   const session = sessionQuery.data;
 
@@ -31,6 +28,5 @@ export function useSessionInfo() {
       partiallyCorrect: session.partiallyCorrectQuestionsIds.length,
       incorrect: session.incorrectQuestionsIds.length,
     },
-    onFinish,
   };
 }
