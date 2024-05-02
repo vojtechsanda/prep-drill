@@ -3,21 +3,31 @@ import { useIntl } from "react-intl";
 
 import { useToast } from "@/components/ui/use-toast";
 import { useSessionInfo } from "@/hooks/session";
-import { useSaveHistoryAnswer } from "@/hooks/storage/history";
+import {
+  useQuestionResult,
+  useSaveHistoryAnswer,
+} from "@/hooks/storage/history";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { Answer, Question } from "@/schemas";
 
 import { QuestionCardAnswers } from "./schema";
 
 export function useDefaultValues(answers: Answer[]): QuestionCardAnswers {
+  const answeredResult = useQuestionResult();
+
   return useMemo(() => {
     return {
-      answers: answers.map((answer) => ({
-        id: answer.id,
-        checked: false,
-      })),
+      answers: answers.map((answer) => {
+        const answered = answeredResult?.[answer.id];
+        const wasChecked = answered !== null && answered !== undefined;
+
+        return {
+          id: answer.id,
+          checked: wasChecked || false,
+        };
+      }),
     };
-  }, [answers]);
+  }, [answers, answeredResult]);
 }
 
 /**
