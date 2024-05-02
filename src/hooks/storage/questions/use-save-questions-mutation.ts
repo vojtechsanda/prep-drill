@@ -3,6 +3,7 @@ import { useIntl } from "react-intl";
 
 import { useToast } from "@/components/ui/use-toast";
 import { STORAGE_PREFIX } from "@/env";
+import { sessionQueryKey } from "@/hooks/storage/session/use-saved-session-query";
 import { Questions } from "@/schemas";
 
 import { allQuestionsQueryKey } from "./use-saved-questions-query";
@@ -21,6 +22,11 @@ export function useSaveQuestionsMutation() {
 
       await queryClient.invalidateQueries({
         queryKey: allQuestionsQueryKey,
+        refetchType: "all",
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: sessionQueryKey,
         refetchType: "all",
       });
     },
