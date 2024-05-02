@@ -22,7 +22,7 @@ export function useSavedSessionQuery() {
 
         if (!valueFromStorage) return null;
 
-        const sessionRaw = JSON.parse(valueFromStorage ?? "{}");
+        const sessionRaw = JSON.parse(valueFromStorage);
         const session = sessionSchema.parse(sessionRaw);
 
         if (session.config.version !== currentSessionVersion) {

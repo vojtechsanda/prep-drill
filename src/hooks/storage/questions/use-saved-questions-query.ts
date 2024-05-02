@@ -20,8 +20,11 @@ export function useSavedQuestionsQuery() {
     queryKey: allQuestionsQueryKey,
     queryFn: async () => {
       try {
-        const valueFromStorage =
-          localStorage.getItem(`${STORAGE_PREFIX}/questions`) ?? "[]";
+        const valueFromStorage = localStorage.getItem(
+          `${STORAGE_PREFIX}/questions`,
+        );
+
+        if (!valueFromStorage) return [];
 
         const questionsRaw = JSON.parse(valueFromStorage);
         return questionsSchema.parse(questionsRaw);

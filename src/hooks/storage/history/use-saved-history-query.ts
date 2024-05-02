@@ -20,8 +20,11 @@ export function useSavedHistoryQuery() {
     queryKey: historyQueryKey,
     queryFn: async () => {
       try {
-        const valueFromStorage =
-          localStorage.getItem(`${STORAGE_PREFIX}/history`) ?? "{}";
+        const valueFromStorage = localStorage.getItem(
+          `${STORAGE_PREFIX}/history`,
+        );
+
+        if (!valueFromStorage) return null;
 
         const historyRaw = JSON.parse(valueFromStorage);
         return historySchema.parse(historyRaw);
