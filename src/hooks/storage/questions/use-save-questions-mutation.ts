@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 
 import { useToast } from "@/components/ui/use-toast";
 import { STORAGE_PREFIX } from "@/env";
-import { sessionQueryKey } from "@/hooks/storage/session/use-saved-session-query";
+import { useClearSessionMutation } from "@/hooks/storage/session";
 import { Questions } from "@/schemas";
 
 import { allQuestionsQueryKey } from "./use-saved-questions-query";
@@ -12,6 +12,8 @@ export function useSaveQuestionsMutation() {
   const intl = useIntl();
   const queryClient = useQueryClient();
   const { toast } = useToast();
+
+  const { mutateAsync: clearSession } = useClearSessionMutation();
 
   return useMutation({
     mutationFn: async (questions: Questions) => {
@@ -25,10 +27,7 @@ export function useSaveQuestionsMutation() {
         refetchType: "all",
       });
 
-      await queryClient.invalidateQueries({
-        queryKey: sessionQueryKey,
-        refetchType: "all",
-      });
+      await clearSession();
     },
     onError: (e) => {
       console.error(e);
