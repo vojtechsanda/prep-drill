@@ -48,6 +48,8 @@ export function FinishedSession() {
           count={sessionInfo.stats.answered}
         />
 
+        {/* TODO: Add not answered questions */}
+
         <StatisticsUnit
           type="CORRECT"
           label={intl.formatMessage({
