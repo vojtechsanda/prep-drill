@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { uid } from "uid";
 
 import { useSessionInfo } from "@/hooks/session";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
@@ -24,6 +25,7 @@ export const useHandleSubmit = () => {
   return async (config: SessionConfigSchema) => {
     // Create session
     const session: Partial<Session> = {
+      id: uid(),
       status: "IN_PROGRESS",
       config,
       correctQuestionsIds: [],

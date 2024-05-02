@@ -4,7 +4,10 @@ import { useIntl } from "react-intl";
 
 import { Prompt } from "@/components";
 import { Button } from "@/components/ui/button";
-import { useSavedSessionQuery } from "@/hooks/storage/session";
+import {
+  useSavedSessionQuery,
+  useSessionVersion,
+} from "@/hooks/storage/session";
 import { sessionConfigSchema } from "@/schemas";
 
 import { SwitchFormField } from "../form-parts";
@@ -16,7 +19,7 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
   const handleSubmit = useHandleSubmit();
 
   const sessionQuery = useSavedSessionQuery();
-
+  const sessionVersion = useSessionVersion();
   const previousMistakesCount =
     (sessionQuery.data?.incorrectQuestionsIds.length ?? 0) +
     (sessionQuery.data?.partiallyCorrectQuestionsIds.length ?? 0);
@@ -24,6 +27,7 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
   return (
     <Prompt
       defaultValues={{
+        version: sessionVersion,
         shuffleQuestions: true,
         shuffleAnswers: true,
         repeatIncorrectQuestions: false,

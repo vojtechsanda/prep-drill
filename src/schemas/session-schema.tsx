@@ -8,6 +8,7 @@ export type SessionStatus = z.infer<typeof sessionStatusSchema>;
 
 export const sessionSchema = z
   .object({
+    id: z.string(),
     status: sessionStatusSchema,
     config: sessionConfigSchema,
     questionsIds: z.array(z.string()).min(1),

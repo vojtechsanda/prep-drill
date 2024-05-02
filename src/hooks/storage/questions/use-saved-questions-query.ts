@@ -5,6 +5,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { STORAGE_PREFIX } from "@/env";
 import { useQuestionsSchema } from "@/schemas";
 
+import { useClearQuestionsMutation } from "./use-clear-questions-mutation";
+
 export const allQuestionsQueryKey = ["questions"];
 
 export function useSavedQuestionsQuery() {
@@ -12,9 +14,11 @@ export function useSavedQuestionsQuery() {
   const questionsSchema = useQuestionsSchema();
   const { toast } = useToast();
 
+  const { mutateAsync: clearQuestions } = useClearQuestionsMutation(false);
+
   return useQuery({
     queryKey: allQuestionsQueryKey,
-    queryFn: () => {
+    queryFn: async () => {
       try {
         const valueFromStorage =
           localStorage.getItem(`${STORAGE_PREFIX}/questions`) ?? "[]";
@@ -35,6 +39,8 @@ export function useSavedQuestionsQuery() {
           }),
           variant: "destructive",
         });
+
+        await clearQuestions();
 
         return [];
       }

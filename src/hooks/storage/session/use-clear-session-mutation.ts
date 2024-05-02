@@ -4,12 +4,14 @@ import { STORAGE_PREFIX } from "@/env";
 
 import { sessionQueryKey } from "./use-saved-session-query";
 
-export function useClearSessionMutation() {
+export function useClearSessionMutation(invalidate = true) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
       localStorage.removeItem(`${STORAGE_PREFIX}/session`);
+
+      if (!invalidate) return;
 
       await queryClient.invalidateQueries({
         queryKey: sessionQueryKey,
