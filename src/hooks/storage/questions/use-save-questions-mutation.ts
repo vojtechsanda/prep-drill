@@ -6,6 +6,7 @@ import { STORAGE_PREFIX } from "@/env";
 import { useClearSessionMutation } from "@/hooks/storage/session";
 import { Questions } from "@/schemas";
 
+import { useClearHistoryMutation } from "../history";
 import { allQuestionsQueryKey } from "./use-saved-questions-query";
 
 export function useSaveQuestionsMutation() {
@@ -14,6 +15,7 @@ export function useSaveQuestionsMutation() {
   const { toast } = useToast();
 
   const { mutateAsync: clearSession } = useClearSessionMutation();
+  const { mutateAsync: clearHistory } = useClearHistoryMutation();
 
   return useMutation({
     mutationFn: async (questions: Questions) => {
@@ -28,6 +30,7 @@ export function useSaveQuestionsMutation() {
       });
 
       await clearSession();
+      await clearHistory();
     },
     onError: (e) => {
       console.error(e);
