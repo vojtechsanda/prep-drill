@@ -4,6 +4,7 @@ import { useIntl } from "react-intl";
 import { useToast } from "@/components/ui/use-toast";
 import { STORAGE_PREFIX } from "@/env";
 import { Session } from "@/schemas";
+import { sessionSchema } from "@/schemas/session-schema";
 
 import { sessionQueryKey } from "./use-saved-session-query";
 
@@ -14,9 +15,11 @@ export function useSaveSessionMutation() {
 
   return useMutation({
     mutationFn: async (session: Session) => {
+      const verifiedSession = sessionSchema.parse(session);
+
       localStorage.setItem(
         `${STORAGE_PREFIX}/session`,
-        JSON.stringify(session),
+        JSON.stringify(verifiedSession),
       );
 
       await queryClient.invalidateQueries({

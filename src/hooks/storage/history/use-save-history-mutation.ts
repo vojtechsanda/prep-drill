@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 
 import { useToast } from "@/components/ui/use-toast";
 import { STORAGE_PREFIX } from "@/env";
-import { History } from "@/schemas/history-schema";
+import { History, useHistorySchema } from "@/schemas/history-schema";
 
 import { historyQueryKey } from "./use-saved-history-query";
 
@@ -11,12 +11,15 @@ export function useSaveHistoryMutation() {
   const intl = useIntl();
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const historySchema = useHistorySchema();
 
   return useMutation({
     mutationFn: async (history: History) => {
+      const verifiedHistory = historySchema.parse(history);
+
       localStorage.setItem(
         `${STORAGE_PREFIX}/history`,
-        JSON.stringify(history),
+        JSON.stringify(verifiedHistory),
       );
 
       await queryClient.invalidateQueries({

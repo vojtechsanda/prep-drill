@@ -4,7 +4,7 @@ import { useIntl } from "react-intl";
 import { useToast } from "@/components/ui/use-toast";
 import { STORAGE_PREFIX } from "@/env";
 import { useClearSessionMutation } from "@/hooks/storage/session";
-import { Questions } from "@/schemas";
+import { Questions, useQuestionsSchema } from "@/schemas";
 
 import { useClearHistoryMutation } from "../history";
 import { allQuestionsQueryKey } from "./use-saved-questions-query";
@@ -17,11 +17,15 @@ export function useSaveQuestionsMutation() {
   const { mutateAsync: clearSession } = useClearSessionMutation();
   const { mutateAsync: clearHistory } = useClearHistoryMutation();
 
+  const questionsSchema = useQuestionsSchema();
+
   return useMutation({
     mutationFn: async (questions: Questions) => {
+      const verifiedQuestions = questionsSchema.parse(questions);
+
       localStorage.setItem(
         `${STORAGE_PREFIX}/questions`,
-        JSON.stringify(questions),
+        JSON.stringify(verifiedQuestions),
       );
 
       await queryClient.invalidateQueries({
