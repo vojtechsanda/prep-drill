@@ -1,12 +1,11 @@
 import { z } from "zod";
 
-import { useQuestionSchema } from "./question-schema";
 import { sessionConfigSchema } from "./session-config-schema";
 
 function useAnswerInHistorySchema() {
   return z.object({
-    question: useQuestionSchema(),
-    answers: z.array(z.string()),
+    questionId: z.string(),
+    answers: z.record(z.string(), z.boolean()),
   });
 }
 
