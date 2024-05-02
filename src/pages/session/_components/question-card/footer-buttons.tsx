@@ -3,7 +3,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
 import { Button } from "@/components/ui/button";
-import { useSessionInfo } from "@/hooks/session";
+import { useNextQuestion, useSessionInfo } from "@/hooks/session";
 import { useQuestionResult } from "@/hooks/storage/history";
 
 type FooterButtonsProps<T extends FieldValues> = {
@@ -23,11 +23,13 @@ export function FooterButtons<T extends FieldValues>({
   const isLastQuestion =
     question && sessionInfo?.session.questionsIds.slice(-1)[0] === question.id;
 
-  const { onNextQuestion, onFinish } = sessionInfo ?? {};
+  const { onFinish } = sessionInfo ?? {};
+
+  const onNextQuestion = useNextQuestion();
 
   const handleNextQuestion = async () => {
     form.reset();
-    await onNextQuestion?.();
+    await onNextQuestion();
   };
 
   return (

@@ -1,5 +1,4 @@
 import { useFinish } from "@/hooks/session/use-finish";
-import { useNextQuestion } from "@/hooks/session/use-next-question";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import { useSavedSessionQuery } from "@/hooks/storage/session";
 
@@ -9,7 +8,6 @@ export function useSessionInfo() {
   const sessionQuery = useSavedSessionQuery();
   const questionsQuery = useSavedQuestionsQuery();
 
-  const onNextQuestion = useNextQuestion();
   const onFinish = useFinish();
 
   const session = sessionQuery.data;
@@ -33,7 +31,6 @@ export function useSessionInfo() {
       partiallyCorrect: session.partiallyCorrectQuestionsIds.length,
       incorrect: session.incorrectQuestionsIds.length,
     },
-    onNextQuestion,
     onFinish,
   };
 }
