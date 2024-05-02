@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { uid } from "uid";
 
 import { useSessionInfo } from "@/hooks/session";
+import { useInitSessionHistory } from "@/hooks/storage/history";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { shuffle } from "@/lib/utils";
@@ -22,10 +23,13 @@ export const useHandleSubmit = () => {
 
   const { mutateAsync: saveSession } = useSaveSessionMutation();
 
+  const initHistory = useInitSessionHistory();
+
   return async (config: SessionConfigSchema) => {
     // Create session
     const session: Partial<Session> = {
       id: uid(),
+      createdAt: new Date().toISOString(),
       status: "IN_PROGRESS",
       config,
       correctQuestionsIds: [],
@@ -52,6 +56,15 @@ export const useHandleSubmit = () => {
 
     // Save session
     await saveSession(parsedSession);
+
+    // Save history entry
+    initHistory({
+      id: parsedSession.id,
+      config: parsedSession.config,
+      createdAt: parsedSession.createdAt,
+      answers: [],
+      totalQuestions: parsedSession.questionsIds.length,
+    });
 
     // Start session
     navigate(`/session`);
