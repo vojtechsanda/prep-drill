@@ -2,24 +2,23 @@ import { useSessionInfo } from "@/hooks/session";
 
 import { useSavedHistoryQuery } from "./use-saved-history-query";
 
-// TODO: It should be history result, not answer - redo this naming in the whole app
 export function useQuestionResult() {
   const historyQuery = useSavedHistoryQuery();
   const sessionInfo = useSessionInfo();
 
   if (!historyQuery.data || !sessionInfo) return null;
 
-  const session = historyQuery.data.sessions[sessionInfo.session.id];
-  if (!session) {
+  const historySession = historyQuery.data.sessions[sessionInfo.session.id];
+  if (!historySession) {
     console.error(
-      `useGetHistoryAnswer[${sessionInfo.session.id}]: Session not found`,
+      `useQuestionResult[${sessionInfo.session.id}]: History session not found`,
     );
     return null;
   }
 
-  const question = session.answers.find(
-    (answer) => answer.questionId === sessionInfo.currentQuestion?.id,
+  const question = historySession.responses.find(
+    (response) => response.questionId === sessionInfo.currentQuestion?.id,
   );
 
-  return question ? question.answers : null;
+  return question ? question.result : null;
 }

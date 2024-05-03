@@ -62,7 +62,7 @@ export const useHandleSubmit = () => {
       id: parsedSession.id,
       config: parsedSession.config,
       createdAt: parsedSession.createdAt,
-      answers: [],
+      responses: [],
       totalQuestions: parsedSession.questionsIds.length,
     });
 

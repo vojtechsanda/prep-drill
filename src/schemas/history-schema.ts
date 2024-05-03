@@ -2,10 +2,12 @@ import { z } from "zod";
 
 import { sessionConfigSchema } from "./session-config-schema";
 
-function useAnswerInHistorySchema() {
+const resultSchema = z.record(z.string(), z.boolean().nullable());
+
+function useResponseInHistorySchema() {
   return z.object({
     questionId: z.string(),
-    answers: z.record(z.string(), z.boolean().nullable()),
+    result: resultSchema,
   });
 }
 
@@ -14,7 +16,7 @@ function useSessionInHistorySchema() {
     id: z.string(),
     config: sessionConfigSchema,
     createdAt: z.string(),
-    answers: z.array(useAnswerInHistorySchema()),
+    responses: z.array(useResponseInHistorySchema()),
     totalQuestions: z.number(),
   });
 }
@@ -25,8 +27,10 @@ export function useHistorySchema() {
   });
 }
 
-export type AnswerInHistory = z.infer<
-  ReturnType<typeof useAnswerInHistorySchema>
+export type Result = z.infer<typeof resultSchema>;
+
+export type ResponseInHistory = z.infer<
+  ReturnType<typeof useResponseInHistorySchema>
 >;
 
 export type SessionInHistory = z.infer<

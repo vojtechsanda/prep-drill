@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useSessionInfo } from "@/hooks/session";
 import {
   useQuestionResult,
-  useSaveHistoryAnswer,
+  useSaveHistoryResponse,
 } from "@/hooks/storage/history";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { Answer } from "@/schemas";
@@ -39,7 +39,7 @@ export function useDefaultValues(answers: Answer[]): QuestionCardAnswers {
  *
  * `null` -> Correct answer not checked
  */
-export function useProcessAnswers() {
+function useProcessAnswers() {
   const sessionInfo = useSessionInfo();
 
   return (data: QuestionCardAnswers) => {
@@ -67,7 +67,7 @@ export function useProcessAnswers() {
   };
 }
 
-export function useSaveAnswers() {
+function useSaveAnswers() {
   const sessionInfo = useSessionInfo();
   const { mutateAsync: saveSession } = useSaveSessionMutation();
 
@@ -113,7 +113,7 @@ export function useHandleSubmit() {
   const saveAnswers = useSaveAnswers();
 
   const sessionInfo = useSessionInfo();
-  const saveAnswerToHistory = useSaveHistoryAnswer();
+  const saveResponseToHistory = useSaveHistoryResponse();
 
   return async (data: QuestionCardAnswers) => {
     if (!sessionInfo || !sessionInfo.currentQuestion) return;
@@ -134,9 +134,9 @@ export function useHandleSubmit() {
       });
     }
 
-    saveAnswerToHistory({
+    saveResponseToHistory({
       questionId: sessionInfo.currentQuestion.id,
-      answers: answeredResult,
+      result: answeredResult,
     });
   };
 }

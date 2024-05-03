@@ -57,7 +57,6 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
 
   const answersResult = useQuestionResult();
 
-  // TODO: Try to make it key based, not array based (something as the processed answers)
   const form = useForm({
     defaultValues,
     resolver: zodResolver(questionCardAnswersSchema),
