@@ -1,3 +1,9 @@
-export function Footer() {
-  return <p className="text-sm text-center">Made with 💖 in Czech Republic</p>;
+import { cn } from "@/lib/utils";
+
+export function Footer({ className }: { className?: string }) {
+  return (
+    <p className={cn("text-sm text-center", className)}>
+      Made with 💖 in Czech Republic
+    </p>
+  );
 }
