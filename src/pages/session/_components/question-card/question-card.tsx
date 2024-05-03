@@ -67,7 +67,7 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
     form.reset(defaultValues);
   }, [defaultValues, form]);
 
-  const handleSubmit = useHandleSubmit(question);
+  const handleSubmit = useHandleSubmit();
 
   if (!sessionInfo) return null;
 

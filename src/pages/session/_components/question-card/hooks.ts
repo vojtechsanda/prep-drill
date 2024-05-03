@@ -8,7 +8,7 @@ import {
   useSaveHistoryAnswer,
 } from "@/hooks/storage/history";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
-import { Answer, Question } from "@/schemas";
+import { Answer } from "@/schemas";
 
 import { QuestionCardAnswers } from "./schema";
 
@@ -39,12 +39,16 @@ export function useDefaultValues(answers: Answer[]): QuestionCardAnswers {
  *
  * `null` -> Correct answer not checked
  */
-export function useProcessAnswers(question: Question) {
+export function useProcessAnswers() {
+  const sessionInfo = useSessionInfo();
+
   return (data: QuestionCardAnswers) => {
     const checkedAnswers = {} as Record<string, boolean | null>;
 
+    if (!sessionInfo) return checkedAnswers;
+
     data.answers.forEach((answer) => {
-      const shouldBeChecked = !!question.answers.find(
+      const shouldBeChecked = !!sessionInfo.currentQuestion?.answers.find(
         (_answer) => answer.id === _answer.id,
       )?.isCorrect;
 
@@ -101,23 +105,23 @@ export function useSaveAnswers() {
   };
 }
 
-export function useHandleSubmit(question: Question) {
+export function useHandleSubmit() {
   const { toast } = useToast();
   const intl = useIntl();
 
-  const processAnswers = useProcessAnswers(question);
+  const processAnswers = useProcessAnswers();
   const saveAnswers = useSaveAnswers();
 
   const sessionInfo = useSessionInfo();
   const saveAnswerToHistory = useSaveHistoryAnswer();
 
   return async (data: QuestionCardAnswers) => {
-    if (!sessionInfo) return;
+    if (!sessionInfo || !sessionInfo.currentQuestion) return;
 
-    const processedAnswers = processAnswers(data);
+    const answeredResult = processAnswers(data);
 
     try {
-      await saveAnswers(processedAnswers);
+      await saveAnswers(answeredResult);
     } catch (error) {
       console.error(error);
 
@@ -130,13 +134,9 @@ export function useHandleSubmit(question: Question) {
       });
     }
 
-    // TODO: hook pro tohle si taky může udělat sessionInfo ne?
     saveAnswerToHistory({
-      sessionId: sessionInfo.session.id,
-      answer: {
-        questionId: question.id,
-        answers: processedAnswers,
-      },
+      questionId: sessionInfo.currentQuestion.id,
+      answers: answeredResult,
     });
   };
 }

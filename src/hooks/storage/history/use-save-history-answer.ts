@@ -1,37 +1,34 @@
+import { useSessionInfo } from "@/hooks/session";
 import { AnswerInHistory } from "@/schemas/history-schema";
 
 import { useSaveHistoryMutation } from "./use-save-history-mutation";
 import { useSavedHistoryQuery } from "./use-saved-history-query";
 
-type SaveHistoryProps = {
-  sessionId: string;
-  answer: AnswerInHistory;
-};
-
 export function useSaveHistoryAnswer() {
   const historyQuery = useSavedHistoryQuery();
+  const sessionInfo = useSessionInfo();
   const { mutate: saveHistory } = useSaveHistoryMutation();
 
-  return ({ sessionId, answer }: SaveHistoryProps) => {
-    if (historyQuery.isLoading) return;
+  return (answer: AnswerInHistory) => {
+    if (historyQuery.isLoading || !sessionInfo) return;
 
     const history = historyQuery.data;
 
     if (!history) {
       console.error(
-        `useSaveHistoryAnswer[${sessionId}]: No history data found. Aborting save.`,
+        `useSaveHistoryAnswer[${sessionInfo.session.id}]: No history data found. Aborting save.`,
       );
       return;
     }
 
-    if (!history.sessions[sessionId]) {
+    if (!history.sessions[sessionInfo.session.id]) {
       console.error(
-        `useSaveHistoryAnswer[${sessionId}]: No session found in history data. Aborting save.`,
+        `useSaveHistoryAnswer[${sessionInfo.session.id}]: No session found in history data. Aborting save.`,
       );
       return;
     }
 
-    const session = history.sessions[sessionId];
+    const session = history.sessions[sessionInfo.session.id];
     session.answers.push(answer);
 
     saveHistory(history);
