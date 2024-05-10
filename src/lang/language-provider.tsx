@@ -12,6 +12,9 @@ export function LanguageProvider({ children }: PropsWithChildren) {
     import(`./messages/${currentLocale}.json`).then((module) => {
       setMessages(module.default);
     });
+
+    // Set lang tag on <html> element
+    document.documentElement.lang = currentLocale;
   }, [currentLocale]);
 
   if (!messages) {
