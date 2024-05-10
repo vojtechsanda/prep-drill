@@ -39,9 +39,9 @@ export function Home() {
         })}
       </h2>
 
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-6">
         {!!questions.length && (
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <SetupSessionPrompt>
               {sessionIsRunning ? (
                 <Button>
@@ -67,16 +67,32 @@ export function Home() {
             )}
           </div>
         )}
-        <ImportQuestionsPrompt>
-          {questions.length ? (
-            <Button variant="link">
-              {intl.formatMessage({
-                id: "homepage.import.import-new-questions",
-                defaultMessage: "Import new questions",
-              })}
-            </Button>
-          ) : null}
-        </ImportQuestionsPrompt>
+
+        <div className="flex flex-col gap-1">
+          <ImportQuestionsPrompt>
+            {questions.length ? (
+              <Button variant="link" className="h-auto py-0">
+                {intl.formatMessage({
+                  id: "homepage.import.import-new-questions",
+                  defaultMessage: "Import new questions",
+                })}
+              </Button>
+            ) : null}
+          </ImportQuestionsPrompt>
+          {!!questions.length && (
+            <span className="text-xs">
+              {intl.formatMessage(
+                {
+                  id: "homepage.import.currently-using",
+                  defaultMessage: "(Currently drilling on {count} questions)",
+                },
+                {
+                  count: questions.length,
+                },
+              )}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
