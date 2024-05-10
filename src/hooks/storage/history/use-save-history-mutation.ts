@@ -22,7 +22,7 @@ export function useSaveHistoryMutation() {
         JSON.stringify(verifiedHistory),
       );
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: historyQueryKey,
         refetchType: "all",
       });

@@ -13,7 +13,7 @@ export function useClearHistoryMutation(invalidate = true) {
 
       if (!invalidate) return;
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: historyQueryKey,
         refetchType: "all",
       });

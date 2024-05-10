@@ -13,7 +13,7 @@ export function useClearSessionMutation(invalidate = true) {
 
       if (!invalidate) return;
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: sessionQueryKey,
       });
     },

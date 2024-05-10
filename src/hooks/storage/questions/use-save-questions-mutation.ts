@@ -28,7 +28,7 @@ export function useSaveQuestionsMutation(clearAppData = false) {
         JSON.stringify(verifiedQuestions),
       );
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: allQuestionsQueryKey,
         refetchType: "all",
       });

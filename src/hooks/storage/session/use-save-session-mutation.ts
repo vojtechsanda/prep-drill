@@ -22,7 +22,7 @@ export function useSaveSessionMutation() {
         JSON.stringify(verifiedSession),
       );
 
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: sessionQueryKey,
       });
     },
