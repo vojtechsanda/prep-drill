@@ -15,8 +15,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useQuestionResult } from "@/hooks/questions";
 import { useSessionInfo } from "@/hooks/session";
-import { useQuestionResult } from "@/hooks/storage/history";
 import { cn, shuffle } from "@/lib/utils";
 import { Question, SessionConfigSchema } from "@/schemas";
 

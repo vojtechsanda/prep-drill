@@ -1,9 +1,8 @@
+import { useSaveHistoryMutation } from "@/hooks/storage/history/use-save-history-mutation";
+import { useSavedHistoryQuery } from "@/hooks/storage/history/use-saved-history-query";
 import { History, SessionInHistory } from "@/schemas/history-schema";
 
-import { useSaveHistoryMutation } from "./use-save-history-mutation";
-import { useSavedHistoryQuery } from "./use-saved-history-query";
-
-export function useInitSessionHistory() {
+export function useInitHistory() {
   const historyQuery = useSavedHistoryQuery();
   const { mutate: saveHistory } = useSaveHistoryMutation();
 

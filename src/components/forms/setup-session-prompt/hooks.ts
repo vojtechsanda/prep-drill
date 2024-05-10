@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { uid } from "uid";
 
+import { useInitHistory } from "@/hooks/history";
 import { useSessionInfo } from "@/hooks/session";
-import { useInitSessionHistory } from "@/hooks/storage/history";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { shuffle } from "@/lib/utils";
@@ -23,7 +23,7 @@ export const useHandleSubmit = () => {
 
   const { mutateAsync: saveSession } = useSaveSessionMutation();
 
-  const initHistory = useInitSessionHistory();
+  const initHistory = useInitHistory();
 
   return async (config: SessionConfigSchema) => {
     // Create session

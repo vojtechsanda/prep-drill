@@ -2,11 +2,9 @@ import { useMemo } from "react";
 import { useIntl } from "react-intl";
 
 import { useToast } from "@/components/ui/use-toast";
+import { useSaveHistoryResponse } from "@/hooks/history";
+import { useQuestionResult } from "@/hooks/questions";
 import { useSessionInfo } from "@/hooks/session";
-import {
-  useQuestionResult,
-  useSaveHistoryResponse,
-} from "@/hooks/storage/history";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { Answer } from "@/schemas";
 

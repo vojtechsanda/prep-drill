@@ -3,8 +3,8 @@ import { FieldValues, useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 
 import { Button } from "@/components/ui/button";
+import { useQuestionResult } from "@/hooks/questions";
 import { useFinish, useNextQuestion, useSessionInfo } from "@/hooks/session";
-import { useQuestionResult } from "@/hooks/storage/history";
 
 type FooterButtonsProps<T extends FieldValues> = {
   form: ReturnType<typeof useForm<T>>;

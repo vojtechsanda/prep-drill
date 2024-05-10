@@ -1,6 +1,6 @@
 import { useSessionInfo } from "@/hooks/session";
 
-import { useSavedHistoryQuery } from "./use-saved-history-query";
+import { useSavedHistoryQuery } from "../storage/history/use-saved-history-query";
 
 export function useQuestionResult() {
   const historyQuery = useSavedHistoryQuery();
