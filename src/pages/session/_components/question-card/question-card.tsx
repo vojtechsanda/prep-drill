@@ -112,24 +112,41 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
         </CardContent>
 
         <CardFooter className="flex flex-wrap-reverse justify-center gap-x-16 gap-y-6 sm:justify-between">
-          <div className="flex items-center justify-center gap-2 sm:gap-3">
-            <span className="text-sm sm:text-base">
-              {intl.formatMessage({
-                id: "session.questionCard.stats",
-                defaultMessage: "Statistics",
-              })}
-              :
-            </span>
+          <div className="flex flex-col items-center gap-2 sm:items-start">
+            <div className="flex items-center justify-center gap-2 sm:gap-3">
+              <span className="text-sm sm:text-base">
+                {intl.formatMessage({
+                  id: "session.questionCard.stats",
+                  defaultMessage: "Statistics",
+                })}
+                :
+              </span>
 
-            <StatisticsUnit type="CORRECT" count={sessionInfo.stats.correct} />
-            <StatisticsUnit
-              type="PARTIALLY"
-              count={sessionInfo.stats.partiallyCorrect}
-            />
-            <StatisticsUnit
-              type="INCORRECT"
-              count={sessionInfo.stats.incorrect}
-            />
+              <StatisticsUnit
+                type="CORRECT"
+                count={sessionInfo.stats.correct}
+              />
+              <StatisticsUnit
+                type="PARTIALLY"
+                count={sessionInfo.stats.partiallyCorrect}
+              />
+              <StatisticsUnit
+                type="INCORRECT"
+                count={sessionInfo.stats.incorrect}
+              />
+            </div>
+            <span className="text-xs">
+              {intl.formatMessage(
+                {
+                  id: "session.question-card.already-answered",
+                  defaultMessage: "Already answered {current}/{total}",
+                },
+                {
+                  current: sessionInfo.stats.answered,
+                  total: sessionInfo.stats.total,
+                },
+              )}
+            </span>
           </div>
 
           <FooterButtons form={form} />
