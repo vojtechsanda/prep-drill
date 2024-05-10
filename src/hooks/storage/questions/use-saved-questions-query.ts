@@ -14,7 +14,7 @@ export function useSavedQuestionsQuery() {
   const questionsSchema = useQuestionsSchema();
   const { toast } = useToast();
 
-  const { mutateAsync: clearQuestions } = useClearQuestionsMutation(false);
+  const { mutateAsync: clearQuestions } = useClearQuestionsMutation();
 
   return useQuery({
     queryKey: allQuestionsQueryKey,
