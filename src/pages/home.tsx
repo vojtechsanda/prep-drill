@@ -7,6 +7,7 @@ import { SetupSessionPrompt } from "@/components/forms/setup-session-prompt";
 import { Button } from "@/components/ui/button";
 import { useSessionInfo } from "@/hooks/session";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
+import { useTitle } from "@/lib/utils";
 
 export function Home() {
   const intl = useIntl();
@@ -16,9 +17,14 @@ export function Home() {
 
   const sessionInfo = useSessionInfo();
 
-  if (questionsQuery.isLoading) {
-    return null;
-  }
+  useTitle(
+    intl.formatMessage({
+      id: "homepage.browser-title",
+      defaultMessage: "Home",
+    }),
+  );
+
+  if (questionsQuery.isLoading) return null;
 
   const sessionIsRunning = sessionInfo && !sessionInfo.isFinished;
 

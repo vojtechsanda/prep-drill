@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { useEffect } from "react";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -12,4 +13,13 @@ export function shuffle<T>(array: T[]): T[] {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
+}
+
+/**
+ * Hook to set the document title.
+ */
+export function useTitle(pageName: string) {
+  useEffect(() => {
+    document.title = `${pageName} | PrepDrill`;
+  }, [pageName]);
 }
