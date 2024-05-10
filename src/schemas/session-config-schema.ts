@@ -4,6 +4,7 @@ export const sessionConfigSchema = z.object({
   version: z.string(),
   shuffleQuestions: z.boolean(),
   shuffleAnswers: z.boolean(),
+  practiceOnlyMarked: z.boolean(),
   repeatIncorrectQuestions: z.boolean(),
   practiceOnlyMistakes: z.boolean(),
 });

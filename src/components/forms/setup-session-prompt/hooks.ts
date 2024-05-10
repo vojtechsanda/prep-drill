@@ -6,20 +6,19 @@ import { useSessionInfo } from "@/hooks/session";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import { useSaveSessionMutation } from "@/hooks/storage/session";
 import { shuffle } from "@/lib/utils";
-import { Session, SessionConfigSchema, sessionSchema } from "@/schemas";
+import {
+  Questions,
+  Session,
+  SessionConfigSchema,
+  sessionSchema,
+} from "@/schemas";
 
 export const useHandleSubmit = () => {
   const navigate = useNavigate();
 
   const questionsQuery = useSavedQuestionsQuery();
 
-  const sessionInfo = useSessionInfo();
-  const mistakesIds =
-    sessionInfo?.session.questionsIds.filter(
-      (id) =>
-        sessionInfo.session.incorrectQuestionsIds.includes(id) ||
-        sessionInfo.session.partiallyCorrectQuestionsIds.includes(id),
-    ) ?? [];
+  const filterQuestions = useFilterQuestions(questionsQuery.data ?? []);
 
   const { mutateAsync: saveSession } = useSaveSessionMutation();
 
@@ -37,9 +36,7 @@ export const useHandleSubmit = () => {
       incorrectQuestionsIds: [],
     };
 
-    const questionsIds = config.practiceOnlyMistakes
-      ? mistakesIds
-      : questionsQuery.data?.map((question) => question.id) ?? [];
+    const questionsIds = filterQuestions(config);
 
     if (!questionsIds?.length) {
       throw new Error("No questions found");
@@ -70,3 +67,31 @@ export const useHandleSubmit = () => {
     navigate(`/session`);
   };
 };
+
+function useFilterQuestions(questions: Questions) {
+  const sessionInfo = useSessionInfo();
+
+  const questionIds = questions.map((question) => question.id);
+
+  const markedIds = questions
+    .filter((question) => question.isMarked)
+    .map((question) => question.id);
+
+  const mistakeIds =
+    sessionInfo?.session.questionsIds.filter(
+      (id) =>
+        sessionInfo.session.incorrectQuestionsIds.includes(id) ||
+        sessionInfo.session.partiallyCorrectQuestionsIds.includes(id),
+    ) ?? [];
+
+  return (config: SessionConfigSchema) => {
+    if (config.practiceOnlyMarked && config.practiceOnlyMistakes) {
+      return markedIds.filter((id) => mistakeIds.includes(id));
+    }
+
+    if (config.practiceOnlyMarked) return markedIds;
+    if (config.practiceOnlyMistakes) return mistakeIds;
+
+    return questionIds;
+  };
+}

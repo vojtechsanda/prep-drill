@@ -4,6 +4,7 @@ import { useIntl } from "react-intl";
 
 import { Prompt } from "@/components";
 import { Button } from "@/components/ui/button";
+import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
 import {
   useSavedSessionQuery,
   useSessionVersion,
@@ -18,6 +19,10 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
   const intl = useIntl();
   const handleSubmit = useHandleSubmit();
 
+  const questionsQuery = useSavedQuestionsQuery();
+  const markedQuestionsCount =
+    questionsQuery.data?.filter((question) => question.isMarked)?.length ?? 0;
+
   const sessionQuery = useSavedSessionQuery();
   const sessionVersion = useSessionVersion();
   const previousMistakesCount =
@@ -30,6 +35,7 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
         version: sessionVersion,
         shuffleQuestions: true,
         shuffleAnswers: true,
+        practiceOnlyMarked: false,
         repeatIncorrectQuestions: false,
         practiceOnlyMistakes: false,
       }}
@@ -67,10 +73,25 @@ export function SetupSessionPrompt({ children }: PropsWithChildren<unknown>) {
             </OptionsSection>
             <OptionsSection
               label={intl.formatMessage({
-                id: "setup-session.mistakes-management",
-                defaultMessage: "Mistakes management",
+                id: "setup-session.questions-management",
+                defaultMessage: "Questions management",
               })}
             >
+              <SwitchFormField
+                disabled={!markedQuestionsCount}
+                form={form}
+                name="practiceOnlyMarked"
+                label={intl.formatMessage(
+                  {
+                    id: "setup-session.practice-marked",
+                    defaultMessage:
+                      "Practice only marked questions ({count} marked)",
+                  },
+                  {
+                    count: markedQuestionsCount,
+                  },
+                )}
+              />
               <SwitchFormField
                 // TODO: Enable when feature is ready
                 disabled
