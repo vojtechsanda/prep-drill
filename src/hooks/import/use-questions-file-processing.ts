@@ -1,3 +1,5 @@
+import { uid } from "uid";
+
 import { Answer, Question, Questions, useQuestionsSchema } from "@/schemas";
 
 import { useFileLoading } from "./use-file-loading";
@@ -41,8 +43,8 @@ export function useQuestionsFileProcessing() {
       if (nextLineIsTitle) {
         nextLineIsTitle = false;
 
-        const [id, ...question] = line.split(". ");
-        currentQuestion.id = id;
+        const [, ...question] = line.split(". ");
+        currentQuestion.id = uid();
         currentQuestion.title = question.join(". ");
         currentQuestion.isMarked = false;
         return;
@@ -59,11 +61,11 @@ export function useQuestionsFileProcessing() {
 
       // Answer processing
       const [prefix, ...answerText] = line.split(") ");
-      const [id, idIfCorrect] = prefix.split(">>>");
+      const [, idIfCorrect] = prefix.split(">>>");
       const isCorrect = !!idIfCorrect;
 
       const answer: Answer = {
-        id: idIfCorrect || id,
+        id: uid(),
         text: answerText.join(") "),
         isCorrect: isCorrect || undefined,
       };
