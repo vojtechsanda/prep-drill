@@ -44,6 +44,7 @@ export function useQuestionsFileProcessing() {
         const [id, ...question] = line.split(". ");
         currentQuestion.id = id;
         currentQuestion.title = question.join(". ");
+        currentQuestion.isMarked = false;
         return;
       }
 

@@ -10,6 +10,7 @@ export function useQuestionSchema() {
   return z.object({
     id: z.string().min(1),
     title: z.string().min(1),
+    isMarked: z.boolean(),
     answers: z
       .array(answerSchema)
       .refine(

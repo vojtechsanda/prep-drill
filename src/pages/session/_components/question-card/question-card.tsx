@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Bookmark, BookmarkCheck } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
@@ -6,6 +7,7 @@ import { useIntl } from "react-intl";
 import { StatisticsUnit } from "@/components";
 import { Form } from "@/components/forms";
 import { CheckboxFormField } from "@/components/forms/form-parts";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -73,10 +75,15 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
   return (
     <Form onSubmit={handleSubmit} form={form} className="w-full max-w-2xl">
       <Card>
-        <CardHeader>
+        <CardHeader className="relative">
           <CardTitle className="text-base sm:text-lg">
             {question.title}
           </CardTitle>
+          <div className="absolute cursor-pointer right-3 -top-5">
+            <Button size="icon" type="button">
+              {question.isMarked ? <BookmarkCheck /> : <Bookmark />}
+            </Button>
+          </div>
         </CardHeader>
 
         <CardContent>
