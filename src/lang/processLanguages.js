@@ -3,7 +3,7 @@ const fs = await import("fs");
 const LANG_PATH = "./src/lang/messages";
 
 const PRIMARY_LOCALE = "en";
-const SECONDARY_LOCALES = ["cs"];
+const SECONDARY_LOCALES = ["cs", "sk"];
 
 function sortObject(obj) {
   return Object.keys(obj)
