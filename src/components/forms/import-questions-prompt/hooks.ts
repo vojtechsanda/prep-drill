@@ -10,7 +10,7 @@ export const useHandleSubmit = () => {
   const { toast } = useToast();
   const processQuestionsFile = useQuestionsFileProcessing();
 
-  const { mutateAsync: saveQuestions } = useSaveQuestionsMutation();
+  const { mutateAsync: saveQuestions } = useSaveQuestionsMutation(true);
 
   return async (data: ImportQuestionsSchema) => {
     try {

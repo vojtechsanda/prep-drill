@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useQuestionResult } from "@/hooks/questions";
+import { useQuestionMarkedToggle, useQuestionResult } from "@/hooks/questions";
 import { useSessionInfo } from "@/hooks/session";
 import { cn, shuffle } from "@/lib/utils";
 import { Question, SessionConfigSchema } from "@/schemas";
@@ -59,6 +59,8 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
 
   const answersResult = useQuestionResult();
 
+  const toggleMarked = useQuestionMarkedToggle();
+
   const form = useForm({
     defaultValues,
     resolver: zodResolver(questionCardAnswersSchema),
@@ -79,11 +81,14 @@ function _QuestionCard({ question, sessionConfig }: _QuestionCardProps) {
           <CardTitle className="text-base sm:text-lg">
             {question.title}
           </CardTitle>
-          <div className="absolute cursor-pointer right-3 -top-5">
-            <Button size="icon" type="button">
-              {question.isMarked ? <BookmarkCheck /> : <Bookmark />}
-            </Button>
-          </div>
+          <Button
+            size="icon"
+            type="button"
+            className="absolute cursor-pointer right-3 -top-5"
+            onClick={() => toggleMarked(question.id)}
+          >
+            {question.isMarked ? <BookmarkCheck /> : <Bookmark />}
+          </Button>
         </CardHeader>
 
         <CardContent>

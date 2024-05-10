@@ -9,7 +9,7 @@ import { Questions, useQuestionsSchema } from "@/schemas";
 import { useClearHistoryMutation } from "../history";
 import { allQuestionsQueryKey } from "./use-saved-questions-query";
 
-export function useSaveQuestionsMutation() {
+export function useSaveQuestionsMutation(clearAppData = false) {
   const intl = useIntl();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -33,8 +33,10 @@ export function useSaveQuestionsMutation() {
         refetchType: "all",
       });
 
-      await clearSession();
-      await clearHistory();
+      if (clearAppData) {
+        await clearSession();
+        await clearHistory();
+      }
     },
     onError: (e) => {
       console.error(e);
