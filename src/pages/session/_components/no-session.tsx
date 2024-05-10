@@ -13,7 +13,7 @@ export function NoSession() {
   if (questionsQuery.isLoading) return null;
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-6">
       <h1 className="text-4xl font-semibold text-center">
         {questionsQuery.data?.length
           ? intl.formatMessage({
