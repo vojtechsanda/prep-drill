@@ -9,8 +9,7 @@ import { useMenuItems } from "./hooks";
 
 export function Menu() {
   const intl = useIntl();
-  // TODO: Update when menu items are implemented
-  const menuItems = /*useMenuItems()*/ [] as ReturnType<typeof useMenuItems>;
+  const menuItems = useMenuItems();
 
   const { toast } = useToast();
 
@@ -42,33 +41,31 @@ export function Menu() {
 
       <div className="flex gap-2">
         {/* Desktop */}
-        {menuItems.map((item) => (
-          <Button
-            /*asChild*/ key={item.url}
-            className="hidden sm:flex"
-            onClick={() => todoToast(item.title)}
-          >
-            {/* <Link to={item.url}> */}
-
-            {item.icon}
-            {item.title}
-            {/* </Link> */}
-          </Button>
-        ))}
+        {menuItems
+          .filter((item) => !item.hide)
+          .map((item) => (
+            <Button asChild key={item.url} className="hidden sm:flex">
+              <Link to={item.url}>
+                {item.icon}
+                {item.title}
+              </Link>
+            </Button>
+          ))}
 
         {/* Mobile */}
-        {menuItems.map((item) => (
-          <Button
-            /*asChild*/ size="icon"
-            key={item.url}
-            className="sm:hidden"
-            onClick={() => todoToast(item.title)}
-          >
-            {/* <Link to={item.url}> */}
-            {item.icon}
-            {/* </Link> */}
-          </Button>
-        ))}
+        {menuItems
+          .filter((item) => !item.hide)
+          .map((item) => (
+            <Button
+              asChild
+              size="icon"
+              key={item.url}
+              className="sm:hidden"
+              onClick={() => todoToast(item.title)}
+            >
+              <Link to={item.url}>{item.icon}</Link>
+            </Button>
+          ))}
       </div>
     </div>
   );
