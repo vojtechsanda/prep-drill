@@ -4,6 +4,20 @@ A modern, interactive study application for quiz-based learning and exam prepara
 
 🔗 **[Live Demo](https://vojtechsanda.github.io/prep-drill/)**
 
+## 🖼️ Screenshots
+
+Here’s a quick look at PrepDrill’s mobile interface:
+
+| Home Page                                | Session Setup                     |
+| ---------------------------------------- | --------------------------------- |
+| ![Home Page](./screenshots/homepage.png) | ![Setup](./screenshots/setup.png) |
+
+| Quiz Question                           | Answer Review                                       | Results Summary                                |
+| --------------------------------------- | --------------------------------------------------- | ---------------------------------------------- |
+| ![Question](./screenshots/question.png) | ![Checked Answers](./screenshots/answer-review.png) | ![Finished](./screenshots/results-summary.png) |
+
+👉 Try it yourself in the **[Live Demo](https://vojtechsanda.github.io/prep-drill/)**!
+
 ## 🚀 Features
 
 | Feature                       | Description                                                     |
