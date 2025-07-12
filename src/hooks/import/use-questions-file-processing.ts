@@ -7,10 +7,10 @@ import { useFileLoading } from "./use-file-loading";
 /**
  * Expected format for questions in file is as follows (each question must have a trailing newline):
  *```txt
- * {uniq_question_id}. {question}
- * >>>{uniq_question_answer_id}) Correct answer 1
- * {uniq_question_answer_id}) Incorrect answer
- * >>>{uniq_question_answer_id}) Correct answer 2
+ * title
+ * >>> Correct answer 1
+ * Incorrect answer
+ * >>> Correct answer 2
  *
  * ```
  * eg.
@@ -26,54 +26,39 @@ export function useQuestionsFileProcessing() {
   const loadFile = useFileLoading();
   const questionsSchema = useQuestionsSchema();
 
-  // TODO: Add better error handling (one bad question should not break the whole import process - just skip it and show a warning)
   return async function processFile(file: File): Promise<Questions> {
-    const questions: Partial<Question>[] = [];
-
     const content = await loadFile(file);
 
-    // TODO: Some RegExp processing magic here would be nicer
-    let nextLineIsTitle = true;
-    let currentQuestion: Partial<Question> = {};
+    const sanitizedQuestionBlocks = content
+      .split("\n")
+      .map((line) => line.trim())
+      .join("\n")
+      .split("\n\n")
+      .map((block) => block.trim())
+      .filter(Boolean);
 
-    content.split("\n").forEach((lineRaw) => {
-      const line = lineRaw.trim();
+    const processedQuestions = sanitizedQuestionBlocks.map((questionBlock) => {
+      const [title, ...answers] = questionBlock.split("\n");
 
-      // Title processing
-      if (nextLineIsTitle) {
-        nextLineIsTitle = false;
+      const processedAnswers = answers.map((answerLine) => {
+        const isCorrect = answerLine.startsWith(">>>");
+        const text = isCorrect ? answerLine.slice(3).trim() : answerLine;
 
-        const [, ...question] = line.split(". ");
-        currentQuestion.id = uid();
-        currentQuestion.title = question.join(". ");
-        currentQuestion.isMarked = false;
-        return;
-      }
+        return {
+          id: uid(),
+          text,
+          isCorrect,
+        } satisfies Answer;
+      });
 
-      // Empty line (newline) -> save question and create a new one
-      if (line === "") {
-        questions.push(currentQuestion);
-
-        currentQuestion = {};
-        nextLineIsTitle = true;
-        return;
-      }
-
-      // Answer processing
-      const [prefix, ...answerText] = line.split(") ");
-      const [, idIfCorrect] = prefix.split(">>>");
-      const isCorrect = !!idIfCorrect;
-
-      const answer: Answer = {
+      return {
         id: uid(),
-        text: answerText.join(") "),
-        isCorrect: isCorrect || undefined,
-      };
-
-      if (!currentQuestion.answers) currentQuestion.answers = [];
-      currentQuestion.answers.push(answer);
+        title,
+        answers: processedAnswers,
+        isMarked: false,
+      } satisfies Question;
     });
 
-    return questionsSchema.parse(questions);
+    return questionsSchema.parse(processedQuestions);
   };
 }
