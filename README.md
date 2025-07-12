@@ -1,6 +1,6 @@
 # PrepDrill
 
-A modern, interactive study application for quiz-based learning and exam preparation. Built with React, TypeScript, and Tailwind CSS as a Progressive Web App (PWA).
+**PrepDrill** is a modern, interactive study app for quiz-based learning and exam preparation — built with React, TypeScript, and Tailwind CSS as a Progressive Web App (PWA).
 
 🔗 **[Live Demo](https://vojtechsanda.github.io/prep-drill/)**
 
