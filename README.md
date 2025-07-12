@@ -4,6 +4,21 @@
 
 🔗 **[Live Demo](https://vojtechsanda.github.io/prep-drill/)**
 
+## Table of Contents
+
+- [🖼️ Screenshots](#----screenshots)
+- [🚀 Features](#---features)
+- [🛠️ Tech Stack](#----tech-stack)
+- [🎯 Usage](#---usage)
+  - [Getting Started](#getting-started)
+  - [Question Format](#question-format)
+- [📦 Installation](#---installation)
+- [🚀 Development](#---development)
+  - [Available Scripts](#available-scripts)
+  - [Project Structure](#project-structure)
+  - [Key Components](#key-components)
+- [🌐 Internationalization](#---internationalization)
+
 ## 🖼️ Screenshots
 
 Here’s a quick look at PrepDrill’s mobile interface:
