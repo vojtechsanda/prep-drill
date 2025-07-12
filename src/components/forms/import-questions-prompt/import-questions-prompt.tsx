@@ -36,12 +36,12 @@ export function ImportQuestionsPrompt({
             form={form}
             name="questions"
             label={
-              <span className="inline-flex items-center gap-1">
+              <span className="inline-flex items-center gap-1 flex-wrap">
                 {intl.formatMessage({
                   id: "import-questions.file",
                   defaultMessage: "Questions file",
                 })}
-                <span className="text-xs">
+                <span className="text-xs ">
                   (
                   <Link
                     to="https://github.com/vojtechsanda/prep-drill#question-format"
