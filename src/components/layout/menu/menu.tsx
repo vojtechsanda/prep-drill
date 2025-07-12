@@ -9,7 +9,8 @@ import { useMenuItems } from "./hooks";
 
 export function Menu() {
   const intl = useIntl();
-  const menuItems = useMenuItems();
+  // TODO: Update when menu items are implemented
+  const menuItems = /*useMenuItems()*/ [] as ReturnType<typeof useMenuItems>;
 
   const { toast } = useToast();
 
