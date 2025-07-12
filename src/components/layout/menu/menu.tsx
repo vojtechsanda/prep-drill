@@ -1,32 +1,21 @@
-import { useIntl } from "react-intl";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import LogoUrl from "@/assets/logo.svg";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 
 import { useMenuItems } from "./hooks";
 
+function useIsActiveFn() {
+  const { pathname } = useLocation();
+
+  return (url: string) => pathname == url;
+}
+
 export function Menu() {
-  const intl = useIntl();
   const menuItems = useMenuItems();
 
-  const { toast } = useToast();
-
-  const todoToast = (title: string) =>
-    toast({
-      title: intl.formatMessage({
-        id: "menu.todo.title",
-        defaultMessage: "Feature under construction",
-      }),
-      description: intl.formatMessage(
-        {
-          id: "menu.todo.description",
-          defaultMessage: 'Sorry, feature "{title}" is not ready yet.',
-        },
-        { title },
-      ),
-    });
+  const isActive = useIsActiveFn();
 
   return (
     <div className="flex items-center justify-between">
@@ -44,7 +33,14 @@ export function Menu() {
         {menuItems
           .filter((item) => !item.hide)
           .map((item) => (
-            <Button asChild key={item.url} className="hidden sm:flex">
+            <Button
+              asChild
+              key={item.url}
+              className={cn(
+                "hidden sm:flex",
+                isActive(item.url) && "translate-y-0.5",
+              )}
+            >
               <Link to={item.url}>
                 {item.icon}
                 {item.title}
@@ -60,8 +56,10 @@ export function Menu() {
               asChild
               size="icon"
               key={item.url}
-              className="sm:hidden"
-              onClick={() => todoToast(item.title)}
+              className={cn(
+                "sm:hidden",
+                isActive(item.url) && "translate-y-0.5",
+              )}
             >
               <Link to={item.url}>{item.icon}</Link>
             </Button>
