@@ -1,16 +1,19 @@
-import { ArrowBigDownDash, GraduationCap } from "lucide-react";
+import { ArrowBigDownDash, FolderInput, GraduationCap } from "lucide-react";
 import { useIntl } from "react-intl";
 import { Link } from "react-router-dom";
 
 import { ImportQuestionsPrompt } from "@/components/forms";
 import { SetupSessionPrompt } from "@/components/forms/setup-session-prompt";
 import { Button } from "@/components/ui/button";
+import { useLoadDemoQuestionsFn } from "@/hooks/demo";
 import { useSessionInfo } from "@/hooks/session";
 import { useSavedQuestionsQuery } from "@/hooks/storage/questions";
-import { useTitle } from "@/lib/utils";
+import { cn, useTitle } from "@/lib/utils";
 
 export function Home() {
   const intl = useIntl();
+
+  const loadDemoQuestions = useLoadDemoQuestionsFn();
 
   const questionsQuery = useSavedQuestionsQuery();
   const questions = questionsQuery.data ?? [];
@@ -74,7 +77,12 @@ export function Home() {
           </div>
         )}
 
-        <div className="flex flex-col gap-1">
+        <div
+          className={cn("flex gap-1 items-center justify-center", {
+            "gap-4 flex-wrap": !questions.length,
+            "flex-col": !!questions.length,
+          })}
+        >
           <ImportQuestionsPrompt>
             {questions.length ? (
               <Button variant="link" className="h-auto py-0">
@@ -85,8 +93,19 @@ export function Home() {
               </Button>
             ) : null}
           </ImportQuestionsPrompt>
+
+          {!questions.length && (
+            <Button onClick={loadDemoQuestions}>
+              <FolderInput />
+              {intl.formatMessage({
+                id: "homepage.import.load-demo-questions",
+                defaultMessage: "Load demo questions",
+              })}
+            </Button>
+          )}
+
           {!!questions.length && (
-            <span className="text-xs">
+            <span className="text-xs text-center">
               {intl.formatMessage(
                 {
                   id: "homepage.import.currently-using",
