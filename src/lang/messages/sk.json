@@ -47,6 +47,7 @@
   "import-questions.error.invalid-file-type": "Neplatný typ súboru",
   "import-questions.error.no-file": "Nebol vybraný žiadny súbor",
   "import-questions.file": "Súbor s otázkami",
+  "import-questions.file-structure-example": "Ukážka štruktúry súboru",
   "import-questions.submit": "Importovať",
   "import-questions.success": "Úspešne importovaných {count} otázok, staré boli nahradené.",
   "import-questions.success-title": "Otázky boli importované",

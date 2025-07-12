@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { FieldValues, Path, useForm } from "react-hook-form";
 
 import {
@@ -15,7 +16,7 @@ type FileFormField<T extends FieldValues> = Omit<
 > & {
   form: ReturnType<typeof useForm<T>>;
   name: Path<T>;
-  label?: string;
+  label?: ReactNode;
 };
 
 export function FileFormField<T extends FieldValues>({

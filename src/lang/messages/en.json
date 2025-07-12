@@ -47,6 +47,7 @@
   "import-questions.error.invalid-file-type": "Invalid file type",
   "import-questions.error.no-file": "No file chosen",
   "import-questions.file": "Questions file",
+  "import-questions.file-structure-example": "File structure example",
   "import-questions.submit": "Import",
   "import-questions.success": "Successfully imported {count} questions, the old ones were replaced.",
   "import-questions.success-title": "Questions imported",
